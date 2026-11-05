@@ -1,0 +1,22 @@
+{
+  "incident_id": "inc-0001-aee009b2",
+  "method": "deterministic_checklist_v1",
+  "outcome": "healthy",
+  "predicted_service": null,
+  "predicted_fault_type": null,
+  "candidate_explanations": [],
+  "supporting_evidence_ids": [
+    "ev-0002-605018d2",
+    "ev-0003-991ab981",
+    "ev-0006-719b8634",
+    "ev-0007-5c85ca83",
+    "ev-0008-c9b800f7"
+  ],
+  "contradictory_evidence_ids": [],
+  "missing_evidence": [],
+  "checks_attempted": 8,
+  "total_diagnostic_duration_ms": 244.31,
+  "total_returned_bytes": 3109,
+  "budget": 8,
+  "stop_reason": "healthy_confirmed"
+}

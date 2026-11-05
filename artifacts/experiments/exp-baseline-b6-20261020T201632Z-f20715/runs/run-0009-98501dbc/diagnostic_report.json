@@ -1,0 +1,29 @@
+{
+  "incident_id": "inc-0009-eb84208c",
+  "method": "deterministic_checklist_v1",
+  "outcome": "inconclusive",
+  "predicted_service": null,
+  "predicted_fault_type": null,
+  "candidate_explanations": [
+    "order-service:db_endpoint_misconfiguration",
+    "database:db_service_unavailable"
+  ],
+  "supporting_evidence_ids": [
+    "ev-0001-8b832b52",
+    "ev-0002-3ad004fb",
+    "ev-0003-43debe8e",
+    "ev-0006-28eaeda1"
+  ],
+  "contradictory_evidence_ids": [],
+  "missing_evidence": [
+    "get_recent_logs:gateway (unavailable)",
+    "get_recent_logs:order-service (unavailable)",
+    "get_order_service_database_config (not_checked_budget_exhausted)",
+    "get_service_health:database (not_checked_budget_exhausted)"
+  ],
+  "checks_attempted": 6,
+  "total_diagnostic_duration_ms": 2135.334,
+  "total_returned_bytes": 857,
+  "budget": 6,
+  "stop_reason": "budget_exhausted"
+}

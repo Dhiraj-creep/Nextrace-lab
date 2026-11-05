@@ -1,0 +1,155 @@
+{
+  "protocol_id": "nextrace-frozen-protocol-v0.4.0",
+  "protocol_version": "v0.4.0",
+  "frozen_at_utc": "2026-10-22T19:38:00Z",
+  "code_manifest_digest_sha256": "857542095a090c6fb040654dd4fbe8f0f5e345131d367f62b931c1817fe493de",
+  "author": "NexTrace Research Team (Aavishkar Competition)",
+  "objective": "Fair, reproducible, leak-free evaluation of diagnostic check selection under missing and changing evidence",
+  "target_applications": [
+    {
+      "app_id": "orders_app",
+      "architecture": "Gateway (FastAPI:18000) -> Order-Service (FastAPI:18001) -> Database (SQLite TCP / Postgres:15432)"
+    },
+    {
+      "app_id": "inventory_app",
+      "architecture": "Inventory-API (FastAPI:18010) -> Inventory-Service (FastAPI:18011) -> Database (SQLite TCP / Postgres:15433) + Cache (Local TCP / Redis:16379)"
+    }
+  ],
+  "cost_model": {
+    "standard_version": "attempt_charged_v2",
+    "description": "Charges declared catalog cost for all admitted attempts including unavailable and collection-failed checks",
+    "historical_version": "legacy_free_unavailable_v1"
+  },
+  "stopping_policy": {
+    "standard_version": "stopping_policy_v2",
+    "modes": [
+      "first_supported_cause",
+      "investigate_additional_causes",
+      "fixed_no_early_stop"
+    ],
+    "rule_summary": "All compared methods receive identical stop/continue decisions when given identical evidence"
+  },
+  "evidence_conditions": [
+    {"condition": "E0", "version": "E0_v2", "description": "Full local observability"},
+    {"condition": "E1", "version": "E1_v2", "description": "Primary service logs unavailable by policy"},
+    {"condition": "E2", "version": "E2_v2", "description": "Active database connectivity probe unavailable by policy"},
+    {"condition": "E3", "version": "E3_v2", "description": "Both primary service logs and database configuration inspection unavailable by policy"},
+    {"condition": "E4", "version": "E4_v2", "description": "In-process service metrics collection endpoint unavailable by policy"},
+    {"condition": "E5", "version": "E5_v2", "description": "Service metrics snapshot returned as stale (600s old) and low-sample"}
+  ],
+  "budgets": [4, 6, 8, 12],
+  "scenarios_by_split": {
+    "development": [
+      "healthy",
+      "fault_a",
+      "fault_b"
+    ],
+    "validation": [
+      "fault_c",
+      "fault_d",
+      "fault_e",
+      "fault_f"
+    ],
+    "challenging": [
+      "challenging_recovery_mid_run",
+      "challenging_diag_endpoint_failure",
+      "challenging_historical_logs_healthy_now",
+      "challenging_unknown_app_error",
+      "unknown_order_validation_contract_error"
+    ],
+    "multi_fault": [
+      "multi_fault_a_and_b",
+      "multi_fault_c_and_d",
+      "multi_fault_f_masks_b"
+    ],
+    "second_application": [
+      "inv_healthy",
+      "inv_fault_db_unavailable",
+      "inv_fault_cache_unavailable",
+      "inv_fault_bad_db_config",
+      "inv_fault_upstream_timeout",
+      "inv_unknown_sku_parser_exception",
+      "inv_multi_fault_db_and_cache"
+    ],
+    "reserved_evaluation": [
+      "unknown_order_currency_rounding_crash"
+    ]
+  },
+  "evaluated_methods": [
+    {
+      "method_name": "deterministic_checklist_v1",
+      "category": "baseline_fixed",
+      "stopping_policy_mode": "fixed_no_early_stop",
+      "notes": "Historical fixed sequence; runs to sequence end or budget exhaustion"
+    },
+    {
+      "method_name": "deterministic_checklist_early_stop_v1",
+      "category": "baseline_fixed_early_stop",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Fair early-stopping baseline"
+    },
+    {
+      "method_name": "improved_checklist_v1",
+      "category": "baseline_improved_fixed",
+      "stopping_policy_mode": "fixed_no_early_stop",
+      "notes": "Domain-ordered 1-cost checks first; runs to sequence end or budget exhaustion"
+    },
+    {
+      "method_name": "improved_checklist_early_stop_v1",
+      "category": "baseline_improved_early_stop",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Fair early-stopping domain checklist"
+    },
+    {
+      "method_name": "rule_adaptive_v1",
+      "category": "rule_based_adaptive",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Hypothesis-driven deterministic rule selector"
+    },
+    {
+      "method_name": "scored_adaptive_v2",
+      "category": "scored_adaptive",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Transparent heuristic scoring: utility = (distinguishing_score * availability * reliability) / normalized_cost"
+    },
+    {
+      "method_name": "scored_no_cost_v2",
+      "category": "ablation",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Changes ONLY normalized_cost = 1.0; availability and reliability unchanged"
+    },
+    {
+      "method_name": "scored_no_avail_v2",
+      "category": "ablation",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Changes ONLY availability_factor = 1.0; cost and reliability unchanged"
+    },
+    {
+      "method_name": "scored_no_reliability_v2",
+      "category": "ablation",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Changes ONLY reliability_factor = 1.0; cost and availability unchanged"
+    },
+    {
+      "method_name": "mock_ai_offline_v1",
+      "category": "ai_mock_adapter",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Deterministic offline mock AI adapter for testing prompt/schema pipelines without network calls"
+    },
+    {
+      "method_name": "ai_live_v1",
+      "category": "ai_live",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Pure live LLM calls (gemini or openai) with allow_fallback=False"
+    },
+    {
+      "method_name": "ai_hybrid_fallback_v1",
+      "category": "ai_hybrid",
+      "stopping_policy_mode": "first_supported_cause",
+      "notes": "Live LLM calls with explicit fallback to scored_adaptive_v2 on budget/provider failure"
+    }
+  ],
+  "repetition_count": 3,
+  "random_seeds": [42, 137, 2026],
+  "verification_status": "FROZEN_VALIDATED"
+}

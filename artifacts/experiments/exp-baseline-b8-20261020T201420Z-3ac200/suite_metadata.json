@@ -1,0 +1,37 @@
+{
+  "suite_id": "exp-baseline-b8-20261020T201420Z-3ac200",
+  "nextrace_version": "0.1.0",
+  "baseline_method": "deterministic_checklist_v1",
+  "checklist_order": [
+    "1. get_dependency_specification()",
+    "2. get_service_health('gateway')",
+    "3. get_service_health('order-service')",
+    "4. get_recent_logs('gateway', window_start_utc, window_end_utc, limit=50)",
+    "5. get_recent_logs('order-service', window_start_utc, window_end_utc, limit=50)",
+    "6. check_database_connectivity_from_order_service()",
+    "7. get_order_service_database_config()",
+    "8. get_service_health('database')"
+  ],
+  "runtime_mode": "local",
+  "python_version": "3.14.7",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "started_at_utc": "2026-10-20T20:14:20.591062Z",
+  "completed_at_utc": "2026-10-20T20:15:20.153815Z",
+  "suite_duration_ms": 59560.57,
+  "parameters": {
+    "scenarios": [
+      "healthy",
+      "fault_a",
+      "fault_b"
+    ],
+    "evidence_conditions": [
+      "E0",
+      "E1",
+      "E2"
+    ],
+    "repetitions": 1,
+    "budget": 8
+  },
+  "ground_truth_directory": "C:\\Users\\dhiraj\\.gemini\\antigravity\\scratch\\nextrace\\var\\ground_truth\\exp-baseline-b8-20261020T201420Z-3ac200",
+  "results_directory": "C:\\Users\\dhiraj\\.gemini\\antigravity\\scratch\\nextrace\\artifacts\\experiments\\exp-baseline-b8-20261020T201420Z-3ac200"
+}

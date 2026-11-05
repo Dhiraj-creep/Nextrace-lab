@@ -1,0 +1,485 @@
+{
+  "report": {
+    "run_id": "run-fault_c-e1-b3-rule_adaptive-r1-1093c3",
+    "method_name": "rule_adaptive_v1",
+    "method_version": "v1",
+    "app_id": "orders_app",
+    "started_at_utc": "2026-10-21T10:49:01.390876Z",
+    "completed_at_utc": "2026-10-21T10:49:01.553025Z",
+    "evaluation_time_utc": "2026-10-21T10:49:01.553025Z",
+    "runtime_mode": "local",
+    "backend_name": "local_sqlite_tcp",
+    "evidence_condition": "E1",
+    "budget_limit": 3,
+    "budget_used": 3,
+    "checks_executed": 4,
+    "unavailable_checks_count": 1,
+    "failed_checks_count": 0,
+    "invalid_checks_count": 0,
+    "redundant_unavailable_checks": 0,
+    "incident": {
+      "incident_id": "inc-ed1d80ad68",
+      "observed_at_utc": "2026-10-21T10:49:01.390837Z",
+      "app_id": "orders_app",
+      "entry_endpoint": "POST /orders",
+      "request_id": "exp-fault_c-e1-3e3648",
+      "http_status": 503,
+      "symptom_summary": "POST /orders returned HTTP 503 (order/reservation failed)",
+      "response_excerpt": {
+        "error": "order_processing_failed",
+        "message": "Unable to process order at this time.",
+        "request_id": "exp-fault_c-e1-3e3648",
+        "status_code": 503
+      }
+    },
+    "outcome": "inconclusive",
+    "failure_classification": "honest_inconclusive",
+    "candidate_service": "order-service",
+    "candidate_fault_type": "db_auth_failure",
+    "predicted_causes": [],
+    "window_diagnosis": "order-service:db_auth_failure",
+    "current_health_status": "degraded_or_failing",
+    "confidence_level": "low",
+    "uncertainty_summary": "Unavailable by policy: [\"get_recent_logs({'service': 'order-service', 'limit': 20})\"]. Requires database health confirmation plus corroborating authentication_failed signals.",
+    "evidence_cited": [
+      "ev-01",
+      "ev-02"
+    ],
+    "evidence_records": [
+      {
+        "evidence_id": "ev-01",
+        "step_number": 1,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "order-service"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 117.36,
+        "timestamp_utc": "2026-10-21T10:49:01.390977Z",
+        "event_time_utc": "2026-10-21T10:49:01.506912Z",
+        "collection_time_utc": "2026-10-21T10:49:01.390977Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service order-service health: live=True, ready=False, error_category=authentication_failed",
+        "data": {
+          "service": "order-service",
+          "live": true,
+          "ready": false,
+          "live_response": {
+            "service": "order-service",
+            "status": "live",
+            "timestamp": "2026-10-21T10:49:01.415570Z"
+          },
+          "ready_response": {
+            "service": "order-service",
+            "status": "not_ready",
+            "database_connectivity": "failed",
+            "error_category": "authentication_failed",
+            "latency_ms": 59.22,
+            "timestamp": "2026-10-21T10:49:01.506912Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:49:01.506912Z"
+        }
+      },
+      {
+        "evidence_id": "ev-02",
+        "step_number": 2,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "database"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 15.73,
+        "timestamp_utc": "2026-10-21T10:49:01.508514Z",
+        "event_time_utc": "2026-10-21T10:49:01.508514Z",
+        "collection_time_utc": "2026-10-21T10:49:01.508514Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Database (database) direct health check on 127.0.0.1:15432: reachable=True, schema_usable=True, error_category=None, latency_ms=15.5",
+        "data": {
+          "service": "database",
+          "reachable": true,
+          "schema_usable": true,
+          "error_category": null,
+          "latency_ms": 15.5,
+          "host": "127.0.0.1",
+          "port": 15432
+        }
+      },
+      {
+        "evidence_id": "ev-03",
+        "step_number": 3,
+        "check_name": "get_recent_logs",
+        "params": {
+          "service": "order-service",
+          "limit": 20
+        },
+        "status": "unavailable_by_policy",
+        "cost_units": 0,
+        "latency_ms": 0.03,
+        "timestamp_utc": "2026-10-21T10:49:01.524442Z",
+        "event_time_utc": null,
+        "collection_time_utc": "2026-10-21T10:49:01.524442Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 60.0,
+        "is_stale": false,
+        "evidence_source": "historical_log",
+        "repeat_index": 1,
+        "summary": "Unavailable under evidence condition E1: Policy E1 blocks order-service log retrieval.",
+        "data": {
+          "evidence_condition": "E1",
+          "policy_reason": "Policy E1 blocks order-service log retrieval."
+        }
+      },
+      {
+        "evidence_id": "ev-04",
+        "step_number": 4,
+        "check_name": "get_service_metrics",
+        "params": {
+          "service": "order-service"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 28.28,
+        "timestamp_utc": "2026-10-21T10:49:01.524584Z",
+        "event_time_utc": "2026-10-21T10:49:01.379446Z",
+        "collection_time_utc": "2026-10-21T10:49:01.524584Z",
+        "observation_interval_sec": 2.03,
+        "freshness_ttl_sec": 20.0,
+        "is_stale": false,
+        "evidence_source": "metric_window",
+        "repeat_index": 1,
+        "summary": "order-service metrics: requests=2, failures=2, error_rate=1.0, dep_failures=2, dep_timeouts=0, avg_ms=71.64, sample_sufficient=True, is_stale=False",
+        "data": {
+          "service": "order-service",
+          "started_at_utc": "2026-10-21T10:48:59.521537Z",
+          "collection_time_utc": "2026-10-21T10:49:01.551760Z",
+          "last_event_time_utc": "2026-10-21T10:49:01.379446Z",
+          "collection_window_sec": 2.03,
+          "request_count": 2,
+          "failure_count": 2,
+          "error_rate": 1.0,
+          "dependency_failures": 2,
+          "dependency_timeouts": 0,
+          "avg_duration_ms": 71.64,
+          "max_duration_ms": 71.77,
+          "minimum_sample_threshold": 2,
+          "sample_sufficient": true,
+          "resets_on_restart": true,
+          "event_time_utc": "2026-10-21T10:49:01.379446Z",
+          "observation_interval_sec": 2.03,
+          "is_stale": false
+        }
+      }
+    ],
+    "conflicts_detected": [],
+    "stale_evidence_ids": [],
+    "final_hypotheses": [
+      {
+        "hypothesis_id": "H0_NO_FAULT_HEALTHY",
+        "candidate_service": null,
+        "candidate_fault_type": null,
+        "description": "No active service fault; gateway, order-service, and database are healthy.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [
+          "ev-02"
+        ],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-04"
+        ],
+        "missing_evidence_notes": [
+          "ev-03: get_recent_logs({'service': 'order-service', 'limit': 20}) was unavailable_by_policy"
+        ]
+      },
+      {
+        "hypothesis_id": "H1_ORDER_DB_CONFIG_ENDPOINT",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "db_endpoint_misconfiguration",
+        "description": "order-service is configured with an invalid or unresolvable database hostname.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01"
+        ],
+        "missing_evidence_notes": [
+          "ev-03: get_recent_logs({'service': 'order-service', 'limit': 20}) was unavailable_by_policy"
+        ]
+      },
+      {
+        "hypothesis_id": "H2_DATABASE_UNAVAILABLE",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_service_unavailable",
+        "description": "The database process/container is stopped or unreachable on its listening port.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-02"
+        ],
+        "missing_evidence_notes": [
+          "ev-03: get_recent_logs({'service': 'order-service', 'limit': 20}) was unavailable_by_policy"
+        ]
+      },
+      {
+        "hypothesis_id": "H3_ORDER_DB_AUTH_FAILURE",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "db_auth_failure",
+        "description": "order-service is configured with invalid database credentials rejected by authentication.",
+        "stance": "supported",
+        "confidence_level": "medium",
+        "supporting_evidence_ids": [
+          "ev-01"
+        ],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": [
+          "ev-03: get_recent_logs({'service': 'order-service', 'limit': 20}) was unavailable_by_policy"
+        ]
+      },
+      {
+        "hypothesis_id": "H4_DATABASE_SCHEMA_MISSING",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_schema_missing_table",
+        "description": "The database is reachable, but the active schema is missing the required 'orders' table.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-02"
+        ],
+        "missing_evidence_notes": [
+          "ev-03: get_recent_logs({'service': 'order-service', 'limit': 20}) was unavailable_by_policy"
+        ]
+      },
+      {
+        "hypothesis_id": "H5_DATABASE_OPERATION_DELAY",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_operation_delay",
+        "description": "Database queries experience high latency exceeding order-service's operation deadline.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-02"
+        ],
+        "missing_evidence_notes": [
+          "ev-03: get_recent_logs({'service': 'order-service', 'limit': 20}) was unavailable_by_policy"
+        ]
+      },
+      {
+        "hypothesis_id": "H6_ORDER_SERVICE_UNAVAILABLE",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "order_service_unavailable",
+        "description": "The order-service process/container is stopped or unreachable from the gateway.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01"
+        ],
+        "missing_evidence_notes": [
+          "ev-03: get_recent_logs({'service': 'order-service', 'limit': 20}) was unavailable_by_policy"
+        ]
+      }
+    ],
+    "decision_log": [
+      {
+        "step_number": 1,
+        "timestamp_utc": "2026-10-21T10:49:01.508401Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY",
+          "H6_ORDER_SERVICE_UNAVAILABLE"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "order-service"
+        },
+        "selection_rationale": "Adaptive step: check order-service liveness & readiness (cost=1) to separate H6 from DB faults H1..H5.",
+        "evidence_id": "ev-01",
+        "evidence_status": "available",
+        "observation_summary": "Service order-service health: live=True, ready=False, error_category=authentication_failed",
+        "hypothesis_updates": {
+          "H0_NO_FAULT_HEALTHY": "weakened -> refuted",
+          "H1_ORDER_DB_CONFIG_ENDPOINT": "plausible -> refuted",
+          "H2_DATABASE_UNAVAILABLE": "plausible -> refuted",
+          "H3_ORDER_DB_AUTH_FAILURE": "plausible -> supported",
+          "H4_DATABASE_SCHEMA_MISSING": "plausible -> refuted",
+          "H5_DATABASE_OPERATION_DELAY": "plausible -> refuted",
+          "H6_ORDER_SERVICE_UNAVAILABLE": "plausible -> refuted"
+        },
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 1,
+        "budget_remaining": 2,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 2,
+        "timestamp_utc": "2026-10-21T10:49:01.524313Z",
+        "plausible_hypotheses_before": [
+          "H3_ORDER_DB_AUTH_FAILURE"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "database"
+        },
+        "selection_rationale": "Adaptive step: check database direct health (cost=1) to test reachability (H2), schema (H4), and delay (H5).",
+        "evidence_id": "ev-02",
+        "evidence_status": "available",
+        "observation_summary": "Database (database) direct health check on 127.0.0.1:15432: reachable=True, schema_usable=True, error_category=None, latency_ms=15.5",
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 2,
+        "budget_remaining": 1,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 3,
+        "timestamp_utc": "2026-10-21T10:49:01.524489Z",
+        "plausible_hypotheses_before": [
+          "H3_ORDER_DB_AUTH_FAILURE"
+        ],
+        "chosen_check": "get_recent_logs",
+        "chosen_params": {
+          "service": "order-service",
+          "limit": 20
+        },
+        "selection_rationale": "Adaptive corroboration for H3: check order-service logs for authentication_failed (cost=1).",
+        "evidence_id": "ev-03",
+        "evidence_status": "unavailable_by_policy",
+        "observation_summary": "Unavailable under evidence condition E1: Policy E1 blocks order-service log retrieval.",
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 2,
+        "budget_remaining": 1,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 4,
+        "timestamp_utc": "2026-10-21T10:49:01.552915Z",
+        "plausible_hypotheses_before": [
+          "H3_ORDER_DB_AUTH_FAILURE"
+        ],
+        "chosen_check": "get_service_metrics",
+        "chosen_params": {
+          "service": "order-service"
+        },
+        "selection_rationale": "Check order-service metrics for timeout/failure counters (cost=1).",
+        "evidence_id": "ev-04",
+        "evidence_status": "available",
+        "observation_summary": "order-service metrics: requests=2, failures=2, error_rate=1.0, dep_failures=2, dep_timeouts=0, avg_ms=71.64, sample_sufficient=True, is_stale=False",
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 3,
+        "budget_remaining": 0,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 5,
+        "timestamp_utc": "2026-10-21T10:49:01.553000Z",
+        "plausible_hypotheses_before": [
+          "H3_ORDER_DB_AUTH_FAILURE"
+        ],
+        "chosen_check": null,
+        "chosen_params": {},
+        "selection_rationale": "Selector decided to stop (budget_exhausted).",
+        "evidence_id": null,
+        "evidence_status": null,
+        "observation_summary": null,
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 3,
+        "budget_remaining": 0,
+        "stop_decision": true,
+        "stop_reason": "budget_exhausted",
+        "ai_usage": null
+      }
+    ],
+    "evidence_gate_passed": false,
+    "evidence_gate_reason": "Evidence gate blocked confident claim for H3_ORDER_DB_AUTH_FAILURE: Requires database health confirmation plus corroborating authentication_failed signals.",
+    "recommended_next_checks": [
+      "get_service_health(database)",
+      "check_database_connectivity_from_order_service()",
+      "get_order_service_database_config()"
+    ],
+    "ai_metadata": null,
+    "ai_budget_snapshot": null,
+    "monotonic_elapsed_sec": 1.479,
+    "monotonic_deadline_sec": 20.0,
+    "execution_error": null
+  },
+  "evaluation": {
+    "run_id": "run-fault_c-e1-b3-rule_adaptive-r1-1093c3",
+    "scenario": "fault_c",
+    "app_id": "orders_app",
+    "split": "held_out",
+    "evidence_condition": "E1",
+    "method_name": "rule_adaptive_v1",
+    "budget_limit": 3,
+    "budget_used": 3,
+    "checks_executed": 4,
+    "outcome": "inconclusive",
+    "failure_classification": "honest_inconclusive",
+    "predicted_service": "order-service",
+    "predicted_fault_type": "db_auth_failure",
+    "predicted_causes": [],
+    "expected_service": "order-service",
+    "expected_fault_type": "db_auth_failure",
+    "expected_causes": [
+      "order-service:db_auth_failure"
+    ],
+    "service_correct": false,
+    "fault_type_correct": false,
+    "joint_root_cause_accurate": false,
+    "cause_set_precision": 0.0,
+    "cause_set_recall": 0.0,
+    "exact_set_match": false,
+    "is_multi_fault_scenario": false,
+    "is_unknown_cause_scenario": false,
+    "unknown_cause_avoided_false_certainty": null,
+    "window_vs_current_separated_correctly": true,
+    "supported_diagnosis": false,
+    "inconclusive_outcome": true,
+    "honest_inconclusive": true,
+    "unsupported_confident_claim": false,
+    "overclaim_under_insufficient_evidence": false,
+    "false_attribution_rate_flag": false,
+    "execution_failure_flag": false,
+    "redundant_unavailable_count": 0,
+    "wall_clock_ms": 3733.69,
+    "ai_tokens_total": 0,
+    "ai_estimated_cost_usd": 0.0,
+    "ai_fallback_count": 0,
+    "scoring_notes": "Honest inconclusive outcome under insufficient/blocked evidence."
+  }
+}

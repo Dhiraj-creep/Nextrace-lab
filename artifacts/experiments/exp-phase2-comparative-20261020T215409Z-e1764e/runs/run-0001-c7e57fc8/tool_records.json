@@ -1,0 +1,148 @@
+[
+  {
+    "evidence_id": "ev-0001-86c8bee2",
+    "check_name": "get_dependency_specification",
+    "target": "application",
+    "execution_status": "success",
+    "observation": {
+      "application": "nextrace-orders-app",
+      "version": "0.1.0",
+      "services": {
+        "gateway": {
+          "role": "api_gateway",
+          "public_endpoint": "http://127.0.0.1:18000",
+          "dependencies": [
+            {
+              "target": "order-service",
+              "protocol": "http",
+              "expected_endpoint": "http://127.0.0.1:18001"
+            }
+          ]
+        },
+        "order-service": {
+          "role": "application_service",
+          "internal_endpoint": "http://127.0.0.1:18001",
+          "dependencies": [
+            {
+              "target": "database",
+              "protocol": "tcp",
+              "expected_db_host": "127.0.0.1",
+              "expected_db_port": 15432,
+              "expected_db_name": "nextrace_orders"
+            }
+          ]
+        },
+        "database": {
+          "role": "persistent_storage",
+          "expected_host": "127.0.0.1",
+          "expected_port": 15432,
+          "dependencies": []
+        }
+      }
+    },
+    "observed_at_utc": "2026-10-20T21:54:11.075841Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 0.285,
+    "payload_bytes": 601,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0002-34c59c2a",
+    "check_name": "get_service_health",
+    "target": "gateway",
+    "execution_status": "success",
+    "observation": {
+      "service": "gateway",
+      "health_status": "running_healthy",
+      "liveness_http_status": 200,
+      "readiness_http_status": 200
+    },
+    "observed_at_utc": "2026-10-20T21:54:11.144457Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 68.484,
+    "payload_bytes": 110,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0003-bb0d33dd",
+    "check_name": "get_service_health",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "health_status": "running_healthy",
+      "liveness_http_status": 200,
+      "readiness_http_status": 200
+    },
+    "observed_at_utc": "2026-10-20T21:54:11.225849Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 81.261,
+    "payload_bytes": 116,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0004-9292b4e5",
+    "check_name": "get_recent_logs",
+    "target": "gateway",
+    "execution_status": "success",
+    "observation": {
+      "service": "gateway",
+      "record_count": 3,
+      "records": [
+        {
+          "timestamp_utc": "2026-10-20T21:54:10.781008Z",
+          "service": "gateway",
+          "request_id": "req-inc-ddacdcb8",
+          "event": "request_received",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "path": "/orders",
+            "product_id": "workload-ddacdcb8",
+            "quantity": 2
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T21:54:10.805025Z",
+          "service": "gateway",
+          "request_id": "req-inc-ddacdcb8",
+          "event": "downstream_call",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "target_service": "order-service",
+            "endpoint": "/orders"
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T21:54:10.998656Z",
+          "service": "gateway",
+          "request_id": "req-inc-ddacdcb8",
+          "event": "request_completed",
+          "outcome": "success",
+          "duration_ms": 217.634,
+          "error_category": null,
+          "details": {
+            "status_code": 201,
+            "order_id": "ord-ae7c58c9e18a"
+          }
+        }
+      ]
+    },
+    "observed_at_utc": "2026-10-20T21:54:11.229126Z",
+    "window_start_utc": "2026-10-20T21:54:10.771582Z",
+    "window_end_utc": "2026-10-20T21:54:11.066360Z",
+    "duration_ms": 3.117,
+    "payload_bytes": 812,
+    "cost_charged": 1,
+    "error_detail": null
+  }
+]

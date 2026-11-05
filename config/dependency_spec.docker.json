@@ -1,0 +1,36 @@
+{
+  "application": "nextrace-orders-app",
+  "version": "0.1.0",
+  "services": {
+    "gateway": {
+      "role": "api_gateway",
+      "public_endpoint": "http://gateway:8000",
+      "dependencies": [
+        {
+          "target": "order-service",
+          "protocol": "http",
+          "expected_endpoint": "http://order-service:8001"
+        }
+      ]
+    },
+    "order-service": {
+      "role": "application_service",
+      "internal_endpoint": "http://order-service:8001",
+      "dependencies": [
+        {
+          "target": "database",
+          "protocol": "postgresql",
+          "expected_db_host": "postgres",
+          "expected_db_port": 5432,
+          "expected_db_name": "nextrace_orders"
+        }
+      ]
+    },
+    "database": {
+      "role": "persistent_storage",
+      "expected_host": "postgres",
+      "expected_port": 5432,
+      "dependencies": []
+    }
+  }
+}

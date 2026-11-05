@@ -1,0 +1,133 @@
+[
+  {
+    "evidence_id": "ev-0001-6c6f6ea0",
+    "check_name": "get_service_health",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "health_status": "running_unready",
+      "liveness_http_status": 200,
+      "readiness_http_status": 503
+    },
+    "observed_at_utc": "2026-10-20T21:57:52.803185Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 126.144,
+    "payload_bytes": 116,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0002-52b79b24",
+    "check_name": "check_database_connectivity_from_order_service",
+    "target": "order-service->database",
+    "execution_status": "success",
+    "observation": {
+      "connectivity": "unreachable",
+      "reachable": false,
+      "network_reachable": true,
+      "database_usable": false,
+      "probe_category": "schema_or_query_error",
+      "target_host": "127.0.0.1",
+      "target_port": 15432,
+      "latency_ms": 32.854,
+      "error_category": "schema_or_query_error"
+    },
+    "observed_at_utc": "2026-10-20T21:57:52.863601Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 60.217,
+    "payload_bytes": 245,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0003-f840768c",
+    "check_name": "get_service_health",
+    "target": "database",
+    "execution_status": "unavailable",
+    "observation": null,
+    "observed_at_utc": "2026-10-20T21:57:52.863768Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 0.002,
+    "payload_bytes": 0,
+    "cost_charged": 1,
+    "error_detail": "Requested telemetry source is currently unavailable."
+  },
+  {
+    "evidence_id": "ev-0004-6bb21b44",
+    "check_name": "get_recent_logs",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "record_count": 4,
+      "records": [
+        {
+          "timestamp_utc": "2026-10-20T21:57:51.431968Z",
+          "service": "order-service",
+          "request_id": "req-inc-d47211f5",
+          "event": "request_received",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "path": "/orders",
+            "product_id": "workload-d47211f5",
+            "quantity": 2
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T21:57:51.465545Z",
+          "service": "order-service",
+          "request_id": "req-inc-d47211f5",
+          "event": "db_operation_attempted",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "operation": "insert_order",
+            "db_host": "127.0.0.1",
+            "db_port": 15432
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T21:57:51.538121Z",
+          "service": "order-service",
+          "request_id": "req-inc-d47211f5",
+          "event": "dependency_failure",
+          "outcome": "failure",
+          "duration_ms": 72.576,
+          "error_category": "schema_or_query_error",
+          "details": {
+            "dependency": "database",
+            "db_host": "127.0.0.1",
+            "db_port": 15432,
+            "reason": "no such table: orders"
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T21:57:51.571995Z",
+          "service": "order-service",
+          "request_id": "req-inc-d47211f5",
+          "event": "request_completed",
+          "outcome": "failure",
+          "duration_ms": 140.019,
+          "error_category": "dependency_error",
+          "details": {
+            "status_code": 503
+          }
+        }
+      ]
+    },
+    "observed_at_utc": "2026-10-20T21:57:52.869047Z",
+    "window_start_utc": "2026-10-20T21:57:51.333766Z",
+    "window_end_utc": "2026-10-20T21:57:51.700792Z",
+    "duration_ms": 5.105,
+    "payload_bytes": 1162,
+    "cost_charged": 1,
+    "error_detail": null
+  }
+]

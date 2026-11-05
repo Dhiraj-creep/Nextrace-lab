@@ -1,0 +1,1007 @@
+{
+  "report": {
+    "run_id": "run-fault_a-e0-b6-scored_no_cost-r1-18a2e6",
+    "method_name": "scored_no_cost_v1",
+    "method_version": "v1",
+    "app_id": "orders_app",
+    "started_at_utc": "2026-10-21T10:36:48.659942Z",
+    "completed_at_utc": "2026-10-21T10:36:48.756912Z",
+    "evaluation_time_utc": "2026-10-21T10:36:48.756912Z",
+    "runtime_mode": "local",
+    "backend_name": "local_sqlite_tcp",
+    "evidence_condition": "E0",
+    "budget_limit": 6,
+    "budget_used": 5,
+    "checks_executed": 4,
+    "unavailable_checks_count": 0,
+    "failed_checks_count": 0,
+    "invalid_checks_count": 0,
+    "redundant_unavailable_checks": 0,
+    "incident": {
+      "incident_id": "inc-7e3182798c",
+      "observed_at_utc": "2026-10-21T10:36:48.659899Z",
+      "app_id": "orders_app",
+      "entry_endpoint": "POST /orders",
+      "request_id": "exp-fault_a-e0-dab064",
+      "http_status": 503,
+      "symptom_summary": "POST /orders returned HTTP 503 (order/reservation failed)",
+      "response_excerpt": {
+        "error": "order_processing_failed",
+        "message": "Unable to process order at this time.",
+        "request_id": "exp-fault_a-e0-dab064",
+        "status_code": 503
+      }
+    },
+    "outcome": "supported_diagnosis",
+    "failure_classification": "supported_diagnosis",
+    "candidate_service": "order-service",
+    "candidate_fault_type": "db_endpoint_misconfiguration",
+    "predicted_causes": [
+      "order-service:db_endpoint_misconfiguration"
+    ],
+    "window_diagnosis": "order-service:db_endpoint_misconfiguration",
+    "current_health_status": "degraded_or_failing",
+    "confidence_level": "high",
+    "uncertainty_summary": "Low uncertainty; multiple independent available checks corroborated the diagnosis.",
+    "evidence_cited": [
+      "ev-01",
+      "ev-02",
+      "ev-03",
+      "ev-04"
+    ],
+    "evidence_records": [
+      {
+        "evidence_id": "ev-01",
+        "step_number": 1,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "order-service"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 78.43,
+        "timestamp_utc": "2026-10-21T10:36:48.660198Z",
+        "event_time_utc": "2026-10-21T10:36:48.737661Z",
+        "collection_time_utc": "2026-10-21T10:36:48.660198Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service order-service health: live=True, ready=False, error_category=hostname_resolution_failed",
+        "data": {
+          "service": "order-service",
+          "live": true,
+          "ready": false,
+          "live_response": {
+            "service": "order-service",
+            "status": "live",
+            "timestamp": "2026-10-21T10:36:48.706071Z"
+          },
+          "ready_response": {
+            "service": "order-service",
+            "status": "not_ready",
+            "database_connectivity": "failed",
+            "error_category": "hostname_resolution_failed",
+            "latency_ms": 0.01,
+            "timestamp": "2026-10-21T10:36:48.737661Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:36:48.737661Z"
+        }
+      },
+      {
+        "evidence_id": "ev-02",
+        "step_number": 2,
+        "check_name": "get_order_service_database_config",
+        "params": {},
+        "status": "available",
+        "cost_units": 2,
+        "latency_ms": 10.42,
+        "timestamp_utc": "2026-10-21T10:36:48.738925Z",
+        "event_time_utc": "2026-10-21T10:36:48.748307Z",
+        "collection_time_utc": "2026-10-21T10:36:48.738925Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 45.0,
+        "is_stale": false,
+        "evidence_source": "config_snapshot",
+        "repeat_index": 1,
+        "summary": "Order-service DB config: db_host=invalid-db-host.internal, db_port=15432, db_name=nextrace_orders, db_user=nextrace_user",
+        "data": {
+          "db_driver": "local_tcp",
+          "db_host": "invalid-db-host.internal",
+          "db_port": 15432,
+          "db_name": "nextrace_orders",
+          "db_user": "nextrace_user",
+          "db_password_redacted": "***REDACTED***",
+          "connect_timeout_sec": 1.0,
+          "event_time_utc": "2026-10-21T10:36:48.748307Z"
+        }
+      },
+      {
+        "evidence_id": "ev-03",
+        "step_number": 3,
+        "check_name": "get_recent_logs",
+        "params": {
+          "service": "order-service",
+          "limit": 20
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 0.96,
+        "timestamp_utc": "2026-10-21T10:36:48.749711Z",
+        "event_time_utc": "2026-10-21T10:36:48.649901Z",
+        "collection_time_utc": "2026-10-21T10:36:48.749711Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 60.0,
+        "is_stale": false,
+        "evidence_source": "historical_log",
+        "repeat_index": 1,
+        "summary": "Retrieved 4 recent log entries for order-service (2 ERROR entries; error_categories=['hostname_resolution_failed']).",
+        "data": {
+          "service": "order-service",
+          "entries_count": 4,
+          "error_count": 2,
+          "error_categories": [
+            "hostname_resolution_failed"
+          ],
+          "observed_events": [
+            "database_write_failed",
+            "order_persistence_started"
+          ],
+          "event_time_utc": "2026-10-21T10:36:48.649901Z",
+          "entries": [
+            {
+              "timestamp": "2026-10-21T10:36:48.568671Z",
+              "timestamp_utc": "2026-10-21T10:36:48.568671Z",
+              "service": "order-service",
+              "level": "INFO",
+              "event": "order_persistence_started",
+              "request_id": "exp-fault_a-e0-dab064-warmup",
+              "order_id": "ord-3c9c826003",
+              "product_id": "sku-router-01",
+              "quantity": 1,
+              "configured_db_host": "invalid-db-host.internal",
+              "configured_db_port": 15432
+            },
+            {
+              "timestamp": "2026-10-21T10:36:48.572501Z",
+              "timestamp_utc": "2026-10-21T10:36:48.572501Z",
+              "service": "order-service",
+              "level": "ERROR",
+              "event": "database_write_failed",
+              "request_id": "exp-fault_a-e0-dab064-warmup",
+              "order_id": "ord-3c9c826003",
+              "configured_db_host": "invalid-db-host.internal",
+              "configured_db_port": 15432,
+              "error_category": "hostname_resolution_failed",
+              "error_detail": "Cannot resolve database host 'invalid-db-host.internal'",
+              "duration_ms": 4.31
+            },
+            {
+              "timestamp": "2026-10-21T10:36:48.645924Z",
+              "timestamp_utc": "2026-10-21T10:36:48.645924Z",
+              "service": "order-service",
+              "level": "INFO",
+              "event": "order_persistence_started",
+              "request_id": "exp-fault_a-e0-dab064",
+              "order_id": "ord-58ec224cd9",
+              "product_id": "sku-router-01",
+              "quantity": 1,
+              "configured_db_host": "invalid-db-host.internal",
+              "configured_db_port": 15432
+            },
+            {
+              "timestamp": "2026-10-21T10:36:48.649901Z",
+              "timestamp_utc": "2026-10-21T10:36:48.649901Z",
+              "service": "order-service",
+              "level": "ERROR",
+              "event": "database_write_failed",
+              "request_id": "exp-fault_a-e0-dab064",
+              "order_id": "ord-58ec224cd9",
+              "configured_db_host": "invalid-db-host.internal",
+              "configured_db_port": 15432,
+              "error_category": "hostname_resolution_failed",
+              "error_detail": "Cannot resolve database host 'invalid-db-host.internal'",
+              "duration_ms": 4.42
+            }
+          ]
+        }
+      },
+      {
+        "evidence_id": "ev-04",
+        "step_number": 4,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "database"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 5.69,
+        "timestamp_utc": "2026-10-21T10:36:48.751020Z",
+        "event_time_utc": "2026-10-21T10:36:48.751020Z",
+        "collection_time_utc": "2026-10-21T10:36:48.751020Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Database (database) direct health check on 127.0.0.1:15432: reachable=True, schema_usable=True, error_category=None, latency_ms=5.48",
+        "data": {
+          "service": "database",
+          "reachable": true,
+          "schema_usable": true,
+          "error_category": null,
+          "latency_ms": 5.48,
+          "host": "127.0.0.1",
+          "port": 15432
+        }
+      }
+    ],
+    "conflicts_detected": [],
+    "stale_evidence_ids": [],
+    "final_hypotheses": [
+      {
+        "hypothesis_id": "H0_NO_FAULT_HEALTHY",
+        "candidate_service": null,
+        "candidate_fault_type": null,
+        "description": "No active service fault; gateway, order-service, and database are healthy.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [
+          "ev-04"
+        ],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-02"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H1_ORDER_DB_CONFIG_ENDPOINT",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "db_endpoint_misconfiguration",
+        "description": "order-service is configured with an invalid or unresolvable database hostname.",
+        "stance": "supported",
+        "confidence_level": "high",
+        "supporting_evidence_ids": [
+          "ev-01",
+          "ev-02",
+          "ev-03"
+        ],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H2_DATABASE_UNAVAILABLE",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_service_unavailable",
+        "description": "The database process/container is stopped or unreachable on its listening port.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H3_ORDER_DB_AUTH_FAILURE",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "db_auth_failure",
+        "description": "order-service is configured with invalid database credentials rejected by authentication.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H4_DATABASE_SCHEMA_MISSING",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_schema_missing_table",
+        "description": "The database is reachable, but the active schema is missing the required 'orders' table.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H5_DATABASE_OPERATION_DELAY",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_operation_delay",
+        "description": "Database queries experience high latency exceeding order-service's operation deadline.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H6_ORDER_SERVICE_UNAVAILABLE",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "order_service_unavailable",
+        "description": "The order-service process/container is stopped or unreachable from the gateway.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-02"
+        ],
+        "missing_evidence_notes": []
+      }
+    ],
+    "decision_log": [
+      {
+        "step_number": 1,
+        "timestamp_utc": "2026-10-21T10:36:48.738678Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY",
+          "H6_ORDER_SERVICE_UNAVAILABLE"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "order-service"
+        },
+        "selection_rationale": "[scored_no_cost_v1] Selected highest utility check (U=0.9900 [D=1.000 (15.0/15 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=1.000)",
+        "evidence_id": "ev-01",
+        "evidence_status": "available",
+        "observation_summary": "Service order-service health: live=True, ready=False, error_category=hostname_resolution_failed",
+        "hypothesis_updates": {
+          "H0_NO_FAULT_HEALTHY": "weakened -> refuted",
+          "H1_ORDER_DB_CONFIG_ENDPOINT": "plausible -> supported",
+          "H2_DATABASE_UNAVAILABLE": "plausible -> weakened",
+          "H3_ORDER_DB_AUTH_FAILURE": "plausible -> refuted",
+          "H4_DATABASE_SCHEMA_MISSING": "plausible -> refuted",
+          "H5_DATABASE_OPERATION_DELAY": "plausible -> refuted",
+          "H6_ORDER_SERVICE_UNAVAILABLE": "plausible -> refuted"
+        },
+        "candidate_scores": [
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "order-service"
+            },
+            "distinguishing_score": 1.0,
+            "disjoint_pairs_count": 15.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.99,
+            "explanation": "U=0.9900 [D=1.000 (15.0/15 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=1.000"
+          },
+          {
+            "check_name": "check_database_connectivity_from_order_service",
+            "params": {},
+            "distinguishing_score": 1.0,
+            "disjoint_pairs_count": 15.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.98,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.98,
+            "explanation": "U=0.9800 [D=1.000 (15.0/15 pairs), avail=1.00, rel=0.98, cost=2 (norm=1.0)]: pairwise_separation=1.000"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "order-service",
+              "limit": 20
+            },
+            "distinguishing_score": 1.0,
+            "disjoint_pairs_count": 15.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.95,
+            "explanation": "U=0.9500 [D=1.000 (15.0/15 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: pairwise_separation=1.000"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "database"
+            },
+            "distinguishing_score": 0.8,
+            "disjoint_pairs_count": 12.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.792,
+            "explanation": "U=0.7920 [D=0.800 (12.0/15 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=0.800"
+          },
+          {
+            "check_name": "get_order_service_database_config",
+            "params": {},
+            "distinguishing_score": 0.6,
+            "disjoint_pairs_count": 9.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.97,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.582,
+            "explanation": "U=0.5820 [D=0.600 (9.0/15 pairs), avail=1.00, rel=0.97, cost=2 (norm=1.0)]: pairwise_separation=0.600"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "order-service"
+            },
+            "distinguishing_score": 0.6,
+            "disjoint_pairs_count": 9.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.564,
+            "explanation": "U=0.5640 [D=0.600 (9.0/15 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: pairwise_separation=0.600"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "gateway",
+              "limit": 20
+            },
+            "distinguishing_score": 0.4,
+            "disjoint_pairs_count": 6.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.38,
+            "explanation": "U=0.3800 [D=0.400 (6.0/15 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: pairwise_separation=0.400"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "gateway"
+            },
+            "distinguishing_score": 0.3333,
+            "disjoint_pairs_count": 5.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.33,
+            "explanation": "U=0.3300 [D=0.333 (5.0/15 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=0.333"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "gateway"
+            },
+            "distinguishing_score": 0.3333,
+            "disjoint_pairs_count": 5.0,
+            "total_pairs_count": 15,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.3133,
+            "explanation": "U=0.3133 [D=0.333 (5.0/15 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: pairwise_separation=0.333"
+          }
+        ],
+        "conflicts_active": [],
+        "budget_used": 1,
+        "budget_remaining": 5,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 2,
+        "timestamp_utc": "2026-10-21T10:36:48.749401Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT"
+        ],
+        "chosen_check": "get_order_service_database_config",
+        "chosen_params": {},
+        "selection_rationale": "[scored_no_cost_v1] Selected highest utility check (U=0.8730 [D=0.900 (1.0/1 pairs), avail=1.00, rel=0.97, cost=2 (norm=1.0)]: gate_recommended_for_H1_ORDER_DB_CONFIG_ENDPOINT(+0.45))",
+        "evidence_id": "ev-02",
+        "evidence_status": "available",
+        "observation_summary": "Order-service DB config: db_host=invalid-db-host.internal, db_port=15432, db_name=nextrace_orders, db_user=nextrace_user",
+        "hypothesis_updates": {},
+        "candidate_scores": [
+          {
+            "check_name": "get_order_service_database_config",
+            "params": {},
+            "distinguishing_score": 0.9,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.97,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.873,
+            "explanation": "U=0.8730 [D=0.900 (1.0/1 pairs), avail=1.00, rel=0.97, cost=2 (norm=1.0)]: gate_recommended_for_H1_ORDER_DB_CONFIG_ENDPOINT(+0.45)"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "order-service",
+              "limit": 20
+            },
+            "distinguishing_score": 0.9,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.855,
+            "explanation": "U=0.8550 [D=0.900 (1.0/1 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: gate_recommended_for_H1_ORDER_DB_CONFIG_ENDPOINT(+0.45)"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "database"
+            },
+            "distinguishing_score": 0.55,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.5445,
+            "explanation": "U=0.5445 [D=0.550 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: gate_recommended_for_H1_ORDER_DB_CONFIG_ENDPOINT(+0.45)"
+          },
+          {
+            "check_name": "check_database_connectivity_from_order_service",
+            "params": {},
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.98,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.441,
+            "explanation": "U=0.4410 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.98, cost=2 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "gateway",
+              "limit": 20
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.4275,
+            "explanation": "U=0.4275 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "order-service"
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.423,
+            "explanation": "U=0.4230 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "gateway"
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.423,
+            "explanation": "U=0.4230 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "gateway"
+            },
+            "distinguishing_score": 0.1,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.099,
+            "explanation": "U=0.0990 [D=0.100 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          }
+        ],
+        "conflicts_active": [],
+        "budget_used": 3,
+        "budget_remaining": 3,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 3,
+        "timestamp_utc": "2026-10-21T10:36:48.750712Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT"
+        ],
+        "chosen_check": "get_recent_logs",
+        "chosen_params": {
+          "service": "order-service",
+          "limit": 20
+        },
+        "selection_rationale": "[scored_no_cost_v1] Selected highest utility check (U=0.8075 [D=0.850 (1.0/1 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: corroborates_hostname_error_in_logs(+0.40))",
+        "evidence_id": "ev-03",
+        "evidence_status": "available",
+        "observation_summary": "Retrieved 4 recent log entries for order-service (2 ERROR entries; error_categories=['hostname_resolution_failed']).",
+        "hypothesis_updates": {},
+        "candidate_scores": [
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "order-service",
+              "limit": 20
+            },
+            "distinguishing_score": 0.85,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.8075,
+            "explanation": "U=0.8075 [D=0.850 (1.0/1 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: corroborates_hostname_error_in_logs(+0.40)"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "database"
+            },
+            "distinguishing_score": 0.6,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.594,
+            "explanation": "U=0.5940 [D=0.600 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: verifies_db_reachability_and_multi_fault(+0.50)"
+          },
+          {
+            "check_name": "check_database_connectivity_from_order_service",
+            "params": {},
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.98,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.441,
+            "explanation": "U=0.4410 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.98, cost=2 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "gateway",
+              "limit": 20
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.4275,
+            "explanation": "U=0.4275 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "order-service"
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.423,
+            "explanation": "U=0.4230 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "gateway"
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.423,
+            "explanation": "U=0.4230 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "gateway"
+            },
+            "distinguishing_score": 0.1,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.099,
+            "explanation": "U=0.0990 [D=0.100 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          }
+        ],
+        "conflicts_active": [],
+        "budget_used": 4,
+        "budget_remaining": 2,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 4,
+        "timestamp_utc": "2026-10-21T10:36:48.756768Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "database"
+        },
+        "selection_rationale": "[scored_no_cost_v1] Selected highest utility check (U=0.5940 [D=0.600 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: verifies_db_reachability_and_multi_fault(+0.50))",
+        "evidence_id": "ev-04",
+        "evidence_status": "available",
+        "observation_summary": "Database (database) direct health check on 127.0.0.1:15432: reachable=True, schema_usable=True, error_category=None, latency_ms=5.48",
+        "hypothesis_updates": {
+          "H2_DATABASE_UNAVAILABLE": "weakened -> refuted"
+        },
+        "candidate_scores": [
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "database"
+            },
+            "distinguishing_score": 0.6,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.594,
+            "explanation": "U=0.5940 [D=0.600 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: verifies_db_reachability_and_multi_fault(+0.50)"
+          },
+          {
+            "check_name": "check_database_connectivity_from_order_service",
+            "params": {},
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.98,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.441,
+            "explanation": "U=0.4410 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.98, cost=2 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "gateway",
+              "limit": 20
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.4275,
+            "explanation": "U=0.4275 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "order-service"
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.423,
+            "explanation": "U=0.4230 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "gateway"
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.423,
+            "explanation": "U=0.4230 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "gateway"
+            },
+            "distinguishing_score": 0.1,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.099,
+            "explanation": "U=0.0990 [D=0.100 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: corroborates H1_ORDER_DB_CONFIG_ENDPOINT"
+          }
+        ],
+        "conflicts_active": [],
+        "budget_used": 5,
+        "budget_remaining": 1,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 5,
+        "timestamp_utc": "2026-10-21T10:36:48.756898Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT"
+        ],
+        "chosen_check": null,
+        "chosen_params": {},
+        "selection_rationale": "Selector decided to stop (evidence_gate_satisfied).",
+        "evidence_id": null,
+        "evidence_status": null,
+        "observation_summary": null,
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 5,
+        "budget_remaining": 1,
+        "stop_decision": true,
+        "stop_reason": "evidence_gate_satisfied",
+        "ai_usage": null
+      }
+    ],
+    "evidence_gate_passed": true,
+    "evidence_gate_reason": "Confirmed order-service DB endpoint misconfiguration via invalid DB host / hostname_resolution_failed evidence.",
+    "recommended_next_checks": [],
+    "ai_metadata": null,
+    "ai_budget_snapshot": null,
+    "monotonic_elapsed_sec": 1.1829,
+    "monotonic_deadline_sec": 20.0,
+    "execution_error": null
+  },
+  "evaluation": {
+    "run_id": "run-fault_a-e0-b6-scored_no_cost-r1-18a2e6",
+    "scenario": "fault_a",
+    "app_id": "orders_app",
+    "split": "development",
+    "evidence_condition": "E0",
+    "method_name": "scored_no_cost_v1",
+    "budget_limit": 6,
+    "budget_used": 5,
+    "checks_executed": 4,
+    "outcome": "supported_diagnosis",
+    "failure_classification": "supported_diagnosis",
+    "predicted_service": "order-service",
+    "predicted_fault_type": "db_endpoint_misconfiguration",
+    "predicted_causes": [
+      "order-service:db_endpoint_misconfiguration"
+    ],
+    "expected_service": "order-service",
+    "expected_fault_type": "db_endpoint_misconfiguration",
+    "expected_causes": [
+      "order-service:db_endpoint_misconfiguration"
+    ],
+    "service_correct": true,
+    "fault_type_correct": true,
+    "joint_root_cause_accurate": true,
+    "cause_set_precision": 1.0,
+    "cause_set_recall": 1.0,
+    "exact_set_match": true,
+    "is_multi_fault_scenario": false,
+    "is_unknown_cause_scenario": false,
+    "unknown_cause_avoided_false_certainty": null,
+    "window_vs_current_separated_correctly": true,
+    "supported_diagnosis": true,
+    "inconclusive_outcome": false,
+    "honest_inconclusive": false,
+    "unsupported_confident_claim": false,
+    "overclaim_under_insufficient_evidence": false,
+    "false_attribution_rate_flag": false,
+    "execution_failure_flag": false,
+    "redundant_unavailable_count": 0,
+    "wall_clock_ms": 3504.7,
+    "ai_tokens_total": 0,
+    "ai_estimated_cost_usd": 0.0,
+    "ai_fallback_count": 0,
+    "scoring_notes": "Accurate diagnosis supported by cited evidence."
+  }
+}

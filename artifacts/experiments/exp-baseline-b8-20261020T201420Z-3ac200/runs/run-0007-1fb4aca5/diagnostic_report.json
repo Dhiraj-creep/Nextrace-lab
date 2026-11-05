@@ -1,0 +1,24 @@
+{
+  "incident_id": "inc-0007-9ba6a4bd",
+  "method": "deterministic_checklist_v1",
+  "outcome": "diagnosed",
+  "predicted_service": "database",
+  "predicted_fault_type": "db_service_unavailable",
+  "candidate_explanations": [],
+  "supporting_evidence_ids": [
+    "ev-0001-36dcb599",
+    "ev-0002-3bf78096",
+    "ev-0003-ba656f85",
+    "ev-0006-c5b7d774",
+    "ev-0007-9a7d7d71",
+    "ev-0008-cbd152e0",
+    "ev-0005-b4876c2a"
+  ],
+  "contradictory_evidence_ids": [],
+  "missing_evidence": [],
+  "checks_attempted": 8,
+  "total_diagnostic_duration_ms": 3201.405,
+  "total_returned_bytes": 3480,
+  "budget": 8,
+  "stop_reason": "diagnosis_reached"
+}

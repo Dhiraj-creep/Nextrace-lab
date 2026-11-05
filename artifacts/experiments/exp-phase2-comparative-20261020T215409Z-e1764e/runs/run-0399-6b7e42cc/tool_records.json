@@ -1,0 +1,65 @@
+[
+  {
+    "evidence_id": "ev-0001-4a27085c",
+    "check_name": "get_service_health",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "health_status": "running_unready",
+      "liveness_http_status": 200,
+      "readiness_http_status": 503
+    },
+    "observed_at_utc": "2026-10-20T22:06:01.189986Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 76.098,
+    "payload_bytes": 116,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0002-8f3046cf",
+    "check_name": "check_database_connectivity_from_order_service",
+    "target": "order-service->database",
+    "execution_status": "success",
+    "observation": {
+      "connectivity": "unreachable",
+      "reachable": false,
+      "network_reachable": true,
+      "database_usable": false,
+      "probe_category": "schema_or_query_error",
+      "target_host": "127.0.0.1",
+      "target_port": 15432,
+      "latency_ms": 33.585,
+      "error_category": "schema_or_query_error"
+    },
+    "observed_at_utc": "2026-10-20T22:06:01.233538Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 43.358,
+    "payload_bytes": 245,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0003-f733b585",
+    "check_name": "get_service_health",
+    "target": "database",
+    "execution_status": "success",
+    "observation": {
+      "service": "database",
+      "health_status": "running_unready",
+      "network_reachable": true,
+      "database_usable": false,
+      "probe_category": "schema_or_query_error"
+    },
+    "observed_at_utc": "2026-10-20T22:06:01.279163Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 45.417,
+    "payload_bytes": 146,
+    "cost_charged": 1,
+    "error_detail": null
+  }
+]

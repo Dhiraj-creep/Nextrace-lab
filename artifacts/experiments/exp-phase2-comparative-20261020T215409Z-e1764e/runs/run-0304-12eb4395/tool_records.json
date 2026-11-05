@@ -1,0 +1,181 @@
+[
+  {
+    "evidence_id": "ev-0001-5f341d0e",
+    "check_name": "get_dependency_specification",
+    "target": "application",
+    "execution_status": "success",
+    "observation": {
+      "application": "nextrace-orders-app",
+      "version": "0.1.0",
+      "services": {
+        "gateway": {
+          "role": "api_gateway",
+          "public_endpoint": "http://127.0.0.1:18000",
+          "dependencies": [
+            {
+              "target": "order-service",
+              "protocol": "http",
+              "expected_endpoint": "http://127.0.0.1:18001"
+            }
+          ]
+        },
+        "order-service": {
+          "role": "application_service",
+          "internal_endpoint": "http://127.0.0.1:18001",
+          "dependencies": [
+            {
+              "target": "database",
+              "protocol": "tcp",
+              "expected_db_host": "127.0.0.1",
+              "expected_db_port": 15432,
+              "expected_db_name": "nextrace_orders"
+            }
+          ]
+        },
+        "database": {
+          "role": "persistent_storage",
+          "expected_host": "127.0.0.1",
+          "expected_port": 15432,
+          "dependencies": []
+        }
+      }
+    },
+    "observed_at_utc": "2026-10-20T22:03:12.624084Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 0.34,
+    "payload_bytes": 601,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0002-8ac29539",
+    "check_name": "get_service_health",
+    "target": "gateway",
+    "execution_status": "success",
+    "observation": {
+      "service": "gateway",
+      "health_status": "running_healthy",
+      "liveness_http_status": 200,
+      "readiness_http_status": 200
+    },
+    "observed_at_utc": "2026-10-20T22:03:12.686559Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 62.382,
+    "payload_bytes": 110,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0003-6ba05c78",
+    "check_name": "get_service_health",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "health_status": "running_unready",
+      "liveness_http_status": 200,
+      "readiness_http_status": 503
+    },
+    "observed_at_utc": "2026-10-20T22:03:12.750109Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 63.448,
+    "payload_bytes": 116,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0004-5d4e85dd",
+    "check_name": "get_recent_logs",
+    "target": "gateway",
+    "execution_status": "unavailable",
+    "observation": null,
+    "observed_at_utc": "2026-10-20T22:03:12.750183Z",
+    "window_start_utc": "2026-10-20T22:03:11.229994Z",
+    "window_end_utc": "2026-10-20T22:03:11.596992Z",
+    "duration_ms": 0.002,
+    "payload_bytes": 0,
+    "cost_charged": 1,
+    "error_detail": "Log source is unavailable."
+  },
+  {
+    "evidence_id": "ev-0005-607f4999",
+    "check_name": "get_recent_logs",
+    "target": "order-service",
+    "execution_status": "unavailable",
+    "observation": null,
+    "observed_at_utc": "2026-10-20T22:03:12.750208Z",
+    "window_start_utc": "2026-10-20T22:03:11.229994Z",
+    "window_end_utc": "2026-10-20T22:03:11.596992Z",
+    "duration_ms": 0.001,
+    "payload_bytes": 0,
+    "cost_charged": 1,
+    "error_detail": "Log source is unavailable."
+  },
+  {
+    "evidence_id": "ev-0006-7e53bfa2",
+    "check_name": "check_database_connectivity_from_order_service",
+    "target": "order-service->database",
+    "execution_status": "success",
+    "observation": {
+      "connectivity": "unreachable",
+      "reachable": false,
+      "network_reachable": false,
+      "database_usable": false,
+      "probe_category": "endpoint_resolution_error",
+      "target_host": "invalid-db-host.internal",
+      "target_port": 15432,
+      "latency_ms": 0.05,
+      "error_category": "endpoint_resolution_error"
+    },
+    "observed_at_utc": "2026-10-20T22:03:12.781284Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 31.017,
+    "payload_bytes": 267,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0007-fe82aa2d",
+    "check_name": "get_order_service_database_config",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "db_host": "invalid-db-host.internal",
+      "db_port": 15432,
+      "db_name": "nextrace_orders",
+      "connect_timeout_sec": 1.0
+    },
+    "observed_at_utc": "2026-10-20T22:03:12.791349Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 9.93,
+    "payload_bytes": 134,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0008-487b76d5",
+    "check_name": "get_service_health",
+    "target": "database",
+    "execution_status": "success",
+    "observation": {
+      "service": "database",
+      "health_status": "running_healthy",
+      "network_reachable": true,
+      "database_usable": true,
+      "probe_category": "database_usable"
+    },
+    "observed_at_utc": "2026-10-20T22:03:12.815474Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 24.009,
+    "payload_bytes": 139,
+    "cost_charged": 1,
+    "error_detail": null
+  }
+]

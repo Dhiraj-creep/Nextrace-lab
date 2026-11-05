@@ -1,0 +1,4 @@
+services:
+  order-service:
+    environment:
+      DB_HOST: invalid-db-host.internal

@@ -1,0 +1,654 @@
+{
+  "report": {
+    "run_id": "run-fault_b-e5-b6-det_checklist-r1-cb2b00",
+    "method_name": "deterministic_checklist_v1",
+    "method_version": "v1",
+    "app_id": "orders_app",
+    "started_at_utc": "2026-10-21T10:47:35.732153Z",
+    "completed_at_utc": "2026-10-21T10:47:37.823128Z",
+    "evaluation_time_utc": "2026-10-21T10:47:37.823128Z",
+    "runtime_mode": "local",
+    "backend_name": "local_sqlite_tcp",
+    "evidence_condition": "E5",
+    "budget_limit": 6,
+    "budget_used": 6,
+    "checks_executed": 5,
+    "unavailable_checks_count": 0,
+    "failed_checks_count": 0,
+    "invalid_checks_count": 0,
+    "redundant_unavailable_checks": 0,
+    "incident": {
+      "incident_id": "inc-ca60b393a5",
+      "observed_at_utc": "2026-10-21T10:47:35.732118Z",
+      "app_id": "orders_app",
+      "entry_endpoint": "POST /orders",
+      "request_id": "exp-fault_b-e5-f76481",
+      "http_status": 503,
+      "symptom_summary": "POST /orders returned HTTP 503 (order/reservation failed)",
+      "response_excerpt": {
+        "error": "order_processing_failed",
+        "message": "Unable to process order at this time.",
+        "request_id": "exp-fault_b-e5-f76481",
+        "status_code": 503
+      }
+    },
+    "outcome": "inconclusive",
+    "failure_classification": "budget_exhaustion",
+    "candidate_service": "database",
+    "candidate_fault_type": "db_service_unavailable",
+    "predicted_causes": [],
+    "window_diagnosis": "database:db_service_unavailable",
+    "current_health_status": "degraded_or_failing",
+    "confidence_level": "low",
+    "uncertainty_summary": "Requires direct confirmation that database is unreachable via get_service_health(database) plus order-service failure observation.",
+    "evidence_cited": [
+      "ev-02",
+      "ev-03",
+      "ev-04",
+      "ev-05"
+    ],
+    "evidence_records": [
+      {
+        "evidence_id": "ev-01",
+        "step_number": 1,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "gateway"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 54.97,
+        "timestamp_utc": "2026-10-21T10:47:35.732227Z",
+        "event_time_utc": "2026-10-21T10:47:35.786102Z",
+        "collection_time_utc": "2026-10-21T10:47:35.732227Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service gateway health: live=True, ready=True",
+        "data": {
+          "service": "gateway",
+          "live": true,
+          "ready": true,
+          "live_response": {
+            "service": "gateway",
+            "status": "live",
+            "timestamp": "2026-10-21T10:47:35.741183Z"
+          },
+          "ready_response": {
+            "service": "gateway",
+            "status": "ready",
+            "upstream_order_service": "reachable",
+            "latency_ms": 34.73,
+            "timestamp": "2026-10-21T10:47:35.786102Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:47:35.786102Z"
+        }
+      },
+      {
+        "evidence_id": "ev-02",
+        "step_number": 2,
+        "check_name": "get_recent_logs",
+        "params": {
+          "service": "gateway",
+          "limit": 20
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 0.87,
+        "timestamp_utc": "2026-10-21T10:47:35.787292Z",
+        "event_time_utc": "2026-10-21T10:47:35.728420Z",
+        "collection_time_utc": "2026-10-21T10:47:35.787292Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 60.0,
+        "is_stale": false,
+        "evidence_source": "historical_log",
+        "repeat_index": 1,
+        "summary": "Retrieved 4 recent log entries for gateway (2 ERROR entries; error_categories=['upstream_order_service_error']).",
+        "data": {
+          "service": "gateway",
+          "entries_count": 4,
+          "error_count": 2,
+          "error_categories": [
+            "upstream_order_service_error"
+          ],
+          "observed_events": [
+            "order_request_failed_upstream",
+            "order_request_received"
+          ],
+          "event_time_utc": "2026-10-21T10:47:35.728420Z",
+          "entries": [
+            {
+              "timestamp": "2026-10-21T10:47:33.613443Z",
+              "timestamp_utc": "2026-10-21T10:47:33.613443Z",
+              "service": "gateway",
+              "level": "INFO",
+              "event": "order_request_received",
+              "request_id": "exp-fault_b-e5-f76481-warmup",
+              "product_id": "sku-router-01",
+              "quantity": 1,
+              "upstream_url": "http://127.0.0.1:18001"
+            },
+            {
+              "timestamp": "2026-10-21T10:47:34.650373Z",
+              "timestamp_utc": "2026-10-21T10:47:34.650373Z",
+              "service": "gateway",
+              "level": "ERROR",
+              "event": "order_request_failed_upstream",
+              "request_id": "exp-fault_b-e5-f76481-warmup",
+              "upstream_status_code": 503,
+              "status_code": 503,
+              "duration_ms": 1036.96,
+              "error_category": "upstream_order_service_error"
+            },
+            {
+              "timestamp": "2026-10-21T10:47:34.677398Z",
+              "timestamp_utc": "2026-10-21T10:47:34.677398Z",
+              "service": "gateway",
+              "level": "INFO",
+              "event": "order_request_received",
+              "request_id": "exp-fault_b-e5-f76481",
+              "product_id": "sku-router-01",
+              "quantity": 1,
+              "upstream_url": "http://127.0.0.1:18001"
+            },
+            {
+              "timestamp": "2026-10-21T10:47:35.728420Z",
+              "timestamp_utc": "2026-10-21T10:47:35.728420Z",
+              "service": "gateway",
+              "level": "ERROR",
+              "event": "order_request_failed_upstream",
+              "request_id": "exp-fault_b-e5-f76481",
+              "upstream_status_code": 503,
+              "status_code": 503,
+              "duration_ms": 1051.03,
+              "error_category": "upstream_order_service_error"
+            }
+          ]
+        }
+      },
+      {
+        "evidence_id": "ev-03",
+        "step_number": 3,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "order-service"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 1021.79,
+        "timestamp_utc": "2026-10-21T10:47:35.788238Z",
+        "event_time_utc": "2026-10-21T10:47:36.808969Z",
+        "collection_time_utc": "2026-10-21T10:47:35.788238Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service order-service health: live=True, ready=False, error_category=connection_refused",
+        "data": {
+          "service": "order-service",
+          "live": true,
+          "ready": false,
+          "live_response": {
+            "service": "order-service",
+            "status": "live",
+            "timestamp": "2026-10-21T10:47:35.797227Z"
+          },
+          "ready_response": {
+            "service": "order-service",
+            "status": "not_ready",
+            "database_connectivity": "failed",
+            "error_category": "connection_refused",
+            "latency_ms": 1001.51,
+            "timestamp": "2026-10-21T10:47:36.808969Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:47:36.808969Z"
+        }
+      },
+      {
+        "evidence_id": "ev-04",
+        "step_number": 4,
+        "check_name": "check_database_connectivity_from_order_service",
+        "params": {},
+        "status": "available",
+        "cost_units": 2,
+        "latency_ms": 1011.88,
+        "timestamp_utc": "2026-10-21T10:47:36.810109Z",
+        "event_time_utc": "2026-10-21T10:47:37.820985Z",
+        "collection_time_utc": "2026-10-21T10:47:36.810109Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Order-service DB connectivity probe: ok=False, target=127.0.0.1:15432, error_category=connection_refused, latency_ms=1002.16",
+        "data": {
+          "ok": false,
+          "configured_host": "127.0.0.1",
+          "configured_port": 15432,
+          "dbname": "nextrace_orders",
+          "latency_ms": 1002.16,
+          "error_category": "connection_refused",
+          "detail": "Cannot connect to database at 127.0.0.1:15432 (port unreachable): timed out",
+          "event_time_utc": "2026-10-21T10:47:37.820985Z"
+        }
+      },
+      {
+        "evidence_id": "ev-05",
+        "step_number": 5,
+        "check_name": "get_recent_logs",
+        "params": {
+          "service": "order-service",
+          "limit": 20
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 0.91,
+        "timestamp_utc": "2026-10-21T10:47:37.822094Z",
+        "event_time_utc": "2026-10-21T10:47:35.723066Z",
+        "collection_time_utc": "2026-10-21T10:47:37.822094Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 60.0,
+        "is_stale": false,
+        "evidence_source": "historical_log",
+        "repeat_index": 1,
+        "summary": "Retrieved 4 recent log entries for order-service (2 ERROR entries; error_categories=['connection_refused']).",
+        "data": {
+          "service": "order-service",
+          "entries_count": 4,
+          "error_count": 2,
+          "error_categories": [
+            "connection_refused"
+          ],
+          "observed_events": [
+            "database_write_failed",
+            "order_persistence_started"
+          ],
+          "event_time_utc": "2026-10-21T10:47:35.723066Z",
+          "entries": [
+            {
+              "timestamp": "2026-10-21T10:47:33.626354Z",
+              "timestamp_utc": "2026-10-21T10:47:33.626354Z",
+              "service": "order-service",
+              "level": "INFO",
+              "event": "order_persistence_started",
+              "request_id": "exp-fault_b-e5-f76481-warmup",
+              "order_id": "ord-1ff74658de",
+              "product_id": "sku-router-01",
+              "quantity": 1,
+              "configured_db_host": "127.0.0.1",
+              "configured_db_port": 15432
+            },
+            {
+              "timestamp": "2026-10-21T10:47:34.645570Z",
+              "timestamp_utc": "2026-10-21T10:47:34.645570Z",
+              "service": "order-service",
+              "level": "ERROR",
+              "event": "database_write_failed",
+              "request_id": "exp-fault_b-e5-f76481-warmup",
+              "order_id": "ord-1ff74658de",
+              "configured_db_host": "127.0.0.1",
+              "configured_db_port": 15432,
+              "error_category": "connection_refused",
+              "error_detail": "Cannot connect to database at 127.0.0.1:15432 (port unreachable): timed out",
+              "duration_ms": 1019.61
+            },
+            {
+              "timestamp": "2026-10-21T10:47:34.709557Z",
+              "timestamp_utc": "2026-10-21T10:47:34.709557Z",
+              "service": "order-service",
+              "level": "INFO",
+              "event": "order_persistence_started",
+              "request_id": "exp-fault_b-e5-f76481",
+              "order_id": "ord-5a79c99f77",
+              "product_id": "sku-router-01",
+              "quantity": 1,
+              "configured_db_host": "127.0.0.1",
+              "configured_db_port": 15432
+            },
+            {
+              "timestamp": "2026-10-21T10:47:35.723066Z",
+              "timestamp_utc": "2026-10-21T10:47:35.723066Z",
+              "service": "order-service",
+              "level": "ERROR",
+              "event": "database_write_failed",
+              "request_id": "exp-fault_b-e5-f76481",
+              "order_id": "ord-5a79c99f77",
+              "configured_db_host": "127.0.0.1",
+              "configured_db_port": 15432,
+              "error_category": "connection_refused",
+              "error_detail": "Cannot connect to database at 127.0.0.1:15432 (port unreachable): timed out",
+              "duration_ms": 1013.78
+            }
+          ]
+        }
+      }
+    ],
+    "conflicts_detected": [],
+    "stale_evidence_ids": [],
+    "final_hypotheses": [
+      {
+        "hypothesis_id": "H0_NO_FAULT_HEALTHY",
+        "candidate_service": null,
+        "candidate_fault_type": null,
+        "description": "No active service fault; gateway, order-service, and database are healthy.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-02",
+          "ev-03",
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H1_ORDER_DB_CONFIG_ENDPOINT",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "db_endpoint_misconfiguration",
+        "description": "order-service is configured with an invalid or unresolvable database hostname.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-03",
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H2_DATABASE_UNAVAILABLE",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_service_unavailable",
+        "description": "The database process/container is stopped or unreachable on its listening port.",
+        "stance": "supported",
+        "confidence_level": "high",
+        "supporting_evidence_ids": [
+          "ev-03",
+          "ev-04",
+          "ev-05"
+        ],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H3_ORDER_DB_AUTH_FAILURE",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "db_auth_failure",
+        "description": "order-service is configured with invalid database credentials rejected by authentication.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-03",
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H4_DATABASE_SCHEMA_MISSING",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_schema_missing_table",
+        "description": "The database is reachable, but the active schema is missing the required 'orders' table.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-03",
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H5_DATABASE_OPERATION_DELAY",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_operation_delay",
+        "description": "Database queries experience high latency exceeding order-service's operation deadline.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-03",
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H6_ORDER_SERVICE_UNAVAILABLE",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "order_service_unavailable",
+        "description": "The order-service process/container is stopped or unreachable from the gateway.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-02",
+          "ev-03",
+          "ev-04"
+        ],
+        "missing_evidence_notes": []
+      }
+    ],
+    "decision_log": [
+      {
+        "step_number": 1,
+        "timestamp_utc": "2026-10-21T10:47:35.787247Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY",
+          "H6_ORDER_SERVICE_UNAVAILABLE"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "gateway"
+        },
+        "selection_rationale": "Fixed step 1: Verify entry gateway liveness and readiness.",
+        "evidence_id": "ev-01",
+        "evidence_status": "available",
+        "observation_summary": "Service gateway health: live=True, ready=True",
+        "hypothesis_updates": {
+          "H6_ORDER_SERVICE_UNAVAILABLE": "plausible -> refuted"
+        },
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 1,
+        "budget_remaining": 5,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 2,
+        "timestamp_utc": "2026-10-21T10:47:35.788203Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY"
+        ],
+        "chosen_check": "get_recent_logs",
+        "chosen_params": {
+          "service": "gateway",
+          "limit": 20
+        },
+        "selection_rationale": "Fixed step 2: Inspect gateway logs for upstream forwarding errors.",
+        "evidence_id": "ev-02",
+        "evidence_status": "available",
+        "observation_summary": "Retrieved 4 recent log entries for gateway (2 ERROR entries; error_categories=['upstream_order_service_error']).",
+        "hypothesis_updates": {
+          "H0_NO_FAULT_HEALTHY": "weakened -> refuted"
+        },
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 2,
+        "budget_remaining": 4,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 3,
+        "timestamp_utc": "2026-10-21T10:47:36.810070Z",
+        "plausible_hypotheses_before": [
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "order-service"
+        },
+        "selection_rationale": "Fixed step 3: Check order-service liveness and readiness.",
+        "evidence_id": "ev-03",
+        "evidence_status": "available",
+        "observation_summary": "Service order-service health: live=True, ready=False, error_category=connection_refused",
+        "hypothesis_updates": {
+          "H1_ORDER_DB_CONFIG_ENDPOINT": "plausible -> refuted",
+          "H2_DATABASE_UNAVAILABLE": "plausible -> supported",
+          "H3_ORDER_DB_AUTH_FAILURE": "plausible -> refuted",
+          "H4_DATABASE_SCHEMA_MISSING": "plausible -> refuted",
+          "H5_DATABASE_OPERATION_DELAY": "plausible -> refuted"
+        },
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 3,
+        "budget_remaining": 3,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 4,
+        "timestamp_utc": "2026-10-21T10:47:37.822041Z",
+        "plausible_hypotheses_before": [
+          "H2_DATABASE_UNAVAILABLE"
+        ],
+        "chosen_check": "check_database_connectivity_from_order_service",
+        "chosen_params": {},
+        "selection_rationale": "Fixed step 4: Execute active database connectivity probe from order-service.",
+        "evidence_id": "ev-04",
+        "evidence_status": "available",
+        "observation_summary": "Order-service DB connectivity probe: ok=False, target=127.0.0.1:15432, error_category=connection_refused, latency_ms=1002.16",
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 5,
+        "budget_remaining": 1,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 5,
+        "timestamp_utc": "2026-10-21T10:47:37.823048Z",
+        "plausible_hypotheses_before": [
+          "H2_DATABASE_UNAVAILABLE"
+        ],
+        "chosen_check": "get_recent_logs",
+        "chosen_params": {
+          "service": "order-service",
+          "limit": 20
+        },
+        "selection_rationale": "Fixed step 6: Inspect order-service logs for database failure categories.",
+        "evidence_id": "ev-05",
+        "evidence_status": "available",
+        "observation_summary": "Retrieved 4 recent log entries for order-service (2 ERROR entries; error_categories=['connection_refused']).",
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 6,
+        "budget_remaining": 0,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 6,
+        "timestamp_utc": "2026-10-21T10:47:37.823115Z",
+        "plausible_hypotheses_before": [
+          "H2_DATABASE_UNAVAILABLE"
+        ],
+        "chosen_check": null,
+        "chosen_params": {},
+        "selection_rationale": "Selector decided to stop (budget_exhausted).",
+        "evidence_id": null,
+        "evidence_status": null,
+        "observation_summary": null,
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 6,
+        "budget_remaining": 0,
+        "stop_decision": true,
+        "stop_reason": "budget_exhausted",
+        "ai_usage": null
+      }
+    ],
+    "evidence_gate_passed": false,
+    "evidence_gate_reason": "Evidence gate blocked confident claim for H2_DATABASE_UNAVAILABLE: Requires direct confirmation that database is unreachable via get_service_health(database) plus order-service failure observation.",
+    "recommended_next_checks": [
+      "get_service_health(database)",
+      "get_service_health(order-service)"
+    ],
+    "ai_metadata": null,
+    "ai_budget_snapshot": null,
+    "monotonic_elapsed_sec": 7.1223,
+    "monotonic_deadline_sec": 20.0,
+    "execution_error": null
+  },
+  "evaluation": {
+    "run_id": "run-fault_b-e5-b6-det_checklist-r1-cb2b00",
+    "scenario": "fault_b",
+    "app_id": "orders_app",
+    "split": "development",
+    "evidence_condition": "E5",
+    "method_name": "deterministic_checklist_v1",
+    "budget_limit": 6,
+    "budget_used": 6,
+    "checks_executed": 5,
+    "outcome": "inconclusive",
+    "failure_classification": "budget_exhaustion",
+    "predicted_service": "database",
+    "predicted_fault_type": "db_service_unavailable",
+    "predicted_causes": [],
+    "expected_service": "database",
+    "expected_fault_type": "db_service_unavailable",
+    "expected_causes": [
+      "database:db_service_unavailable"
+    ],
+    "service_correct": false,
+    "fault_type_correct": false,
+    "joint_root_cause_accurate": false,
+    "cause_set_precision": 0.0,
+    "cause_set_recall": 0.0,
+    "exact_set_match": false,
+    "is_multi_fault_scenario": false,
+    "is_unknown_cause_scenario": false,
+    "unknown_cause_avoided_false_certainty": null,
+    "window_vs_current_separated_correctly": true,
+    "supported_diagnosis": false,
+    "inconclusive_outcome": true,
+    "honest_inconclusive": true,
+    "unsupported_confident_claim": false,
+    "overclaim_under_insufficient_evidence": false,
+    "false_attribution_rate_flag": false,
+    "execution_failure_flag": false,
+    "redundant_unavailable_count": 0,
+    "wall_clock_ms": 7837.1,
+    "ai_tokens_total": 0,
+    "ai_estimated_cost_usd": 0.0,
+    "ai_fallback_count": 0,
+    "scoring_notes": "Honest inconclusive outcome under insufficient/blocked evidence."
+  }
+}

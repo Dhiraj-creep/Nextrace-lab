@@ -1,0 +1,659 @@
+{
+  "report": {
+    "run_id": "run-inv_fault_cache_unavailable-e0-b3-scored_adaptive-r1-822c2c",
+    "method_name": "scored_adaptive_v1",
+    "method_version": "v1",
+    "app_id": "inventory_app",
+    "started_at_utc": "2026-10-21T10:26:57.667023Z",
+    "completed_at_utc": "2026-10-21T10:26:59.725242Z",
+    "evaluation_time_utc": "2026-10-21T10:26:59.725242Z",
+    "runtime_mode": "local",
+    "backend_name": "local_sqlite_tcp_and_local_tcp_cache_substitute",
+    "evidence_condition": "E0",
+    "budget_limit": 3,
+    "budget_used": 2,
+    "checks_executed": 2,
+    "unavailable_checks_count": 0,
+    "failed_checks_count": 0,
+    "invalid_checks_count": 0,
+    "redundant_unavailable_checks": 0,
+    "incident": {
+      "incident_id": "inc-23386c1136",
+      "observed_at_utc": "2026-10-21T10:26:57.666983Z",
+      "app_id": "inventory_app",
+      "entry_endpoint": "POST /inventory/reserve",
+      "request_id": "exp-inv_fault_cache_unavailable-e0-b44635",
+      "http_status": 503,
+      "symptom_summary": "POST /inventory/reserve returned HTTP 503 (order/reservation failed)",
+      "response_excerpt": {
+        "error": "inventory_reservation_failed",
+        "message": "Unable to reserve inventory at this time.",
+        "request_id": "exp-inv_fault_cache_unavailable-e0-b44635",
+        "status_code": 503
+      }
+    },
+    "outcome": "supported_diagnosis",
+    "failure_classification": "supported_diagnosis",
+    "candidate_service": "inventory-cache",
+    "candidate_fault_type": "cache_service_unavailable",
+    "predicted_causes": [
+      "inventory-cache:cache_service_unavailable"
+    ],
+    "window_diagnosis": "inventory-cache:cache_service_unavailable",
+    "current_health_status": "degraded_or_failing",
+    "confidence_level": "high",
+    "uncertainty_summary": "Low uncertainty; multiple independent available checks corroborated the diagnosis.",
+    "evidence_cited": [
+      "ev-01",
+      "ev-02"
+    ],
+    "evidence_records": [
+      {
+        "evidence_id": "ev-01",
+        "step_number": 1,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "inventory-service"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 851.07,
+        "timestamp_utc": "2026-10-21T10:26:57.667287Z",
+        "event_time_utc": "2026-10-21T10:26:58.517272Z",
+        "collection_time_utc": "2026-10-21T10:26:57.667287Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service inventory-service health: live=True, ready=False, error_category=cache_connection_refused",
+        "data": {
+          "service": "inventory-service",
+          "live": true,
+          "ready": false,
+          "live_response": {
+            "service": "inventory-service",
+            "status": "live",
+            "timestamp": "2026-10-21T10:26:57.676014Z"
+          },
+          "ready_response": {
+            "service": "inventory-service",
+            "status": "not_ready",
+            "database_connectivity": "ok",
+            "cache_connectivity": "failed",
+            "error_category": "cache_connection_refused",
+            "timestamp": "2026-10-21T10:26:58.517272Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:26:58.517272Z"
+        }
+      },
+      {
+        "evidence_id": "ev-02",
+        "step_number": 2,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "inventory-cache"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 1206.23,
+        "timestamp_utc": "2026-10-21T10:26:58.518886Z",
+        "event_time_utc": "2026-10-21T10:26:58.518886Z",
+        "collection_time_utc": "2026-10-21T10:26:58.518886Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Cache (inventory-cache) direct health check on 127.0.0.1:16379: reachable=False (cache_connection_refused).",
+        "data": {
+          "service": "inventory-cache",
+          "reachable": false,
+          "error_category": "cache_connection_refused",
+          "latency_ms": 1206.18,
+          "detail": "timed out",
+          "host": "127.0.0.1",
+          "port": 16379
+        }
+      }
+    ],
+    "conflicts_detected": [],
+    "stale_evidence_ids": [],
+    "final_hypotheses": [
+      {
+        "hypothesis_id": "IH0_NO_FAULT_HEALTHY",
+        "candidate_service": null,
+        "candidate_fault_type": null,
+        "description": "All inventory_app services, database, and cache are healthy.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-02"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "IH1_INV_DB_UNAVAILABLE",
+        "candidate_service": "inventory-db",
+        "candidate_fault_type": "db_service_unavailable",
+        "description": "inventory-db service is stopped or unreachable while inventory-cache remains healthy.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-02"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "IH2_INV_CACHE_UNAVAILABLE",
+        "candidate_service": "inventory-cache",
+        "candidate_fault_type": "cache_service_unavailable",
+        "description": "inventory-cache service is stopped or unreachable while inventory-db remains healthy.",
+        "stance": "supported",
+        "confidence_level": "high",
+        "supporting_evidence_ids": [
+          "ev-01",
+          "ev-02"
+        ],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "IH3_INV_DB_CONFIG_ENDPOINT",
+        "candidate_service": "inventory-service",
+        "candidate_fault_type": "db_endpoint_misconfiguration",
+        "description": "inventory-service is configured with an invalid/unresolvable database hostname.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-02"
+        ],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "IH4_INV_DB_OPERATION_DELAY",
+        "candidate_service": "inventory-db",
+        "candidate_fault_type": "db_operation_delay",
+        "description": "inventory-db operations experience high latency exceeding inventory-service timeout.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-02"
+        ],
+        "missing_evidence_notes": []
+      }
+    ],
+    "decision_log": [
+      {
+        "step_number": 1,
+        "timestamp_utc": "2026-10-21T10:26:58.518384Z",
+        "plausible_hypotheses_before": [
+          "IH1_INV_DB_UNAVAILABLE",
+          "IH2_INV_CACHE_UNAVAILABLE",
+          "IH3_INV_DB_CONFIG_ENDPOINT",
+          "IH4_INV_DB_OPERATION_DELAY"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "inventory-service"
+        },
+        "selection_rationale": "[scored_adaptive_v1] Selected highest utility check (U=0.9900 [D=1.000 (6.0/6 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=1.000)",
+        "evidence_id": "ev-01",
+        "evidence_status": "available",
+        "observation_summary": "Service inventory-service health: live=True, ready=False, error_category=cache_connection_refused",
+        "hypothesis_updates": {
+          "IH0_NO_FAULT_HEALTHY": "weakened -> refuted",
+          "IH1_INV_DB_UNAVAILABLE": "plausible -> weakened",
+          "IH2_INV_CACHE_UNAVAILABLE": "plausible -> supported",
+          "IH3_INV_DB_CONFIG_ENDPOINT": "plausible -> weakened",
+          "IH4_INV_DB_OPERATION_DELAY": "plausible -> weakened"
+        },
+        "candidate_scores": [
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "inventory-service"
+            },
+            "distinguishing_score": 1.0,
+            "disjoint_pairs_count": 6.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.99,
+            "explanation": "U=0.9900 [D=1.000 (6.0/6 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=1.000"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "inventory-service",
+              "limit": 20
+            },
+            "distinguishing_score": 1.0,
+            "disjoint_pairs_count": 6.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.95,
+            "explanation": "U=0.9500 [D=1.000 (6.0/6 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: pairwise_separation=1.000"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "inventory-db"
+            },
+            "distinguishing_score": 0.8333,
+            "disjoint_pairs_count": 5.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.825,
+            "explanation": "U=0.8250 [D=0.833 (5.0/6 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=0.833"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "inventory-cache"
+            },
+            "distinguishing_score": 0.5,
+            "disjoint_pairs_count": 3.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.495,
+            "explanation": "U=0.4950 [D=0.500 (3.0/6 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=0.500"
+          },
+          {
+            "check_name": "check_inventory_db_connectivity",
+            "params": {},
+            "distinguishing_score": 1.0,
+            "disjoint_pairs_count": 6.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.98,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 2.0,
+            "final_utility_score": 0.49,
+            "explanation": "U=0.4900 [D=1.000 (6.0/6 pairs), avail=1.00, rel=0.98, cost=2 (norm=2.0)]: pairwise_separation=1.000"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "inventory-service"
+            },
+            "distinguishing_score": 0.5,
+            "disjoint_pairs_count": 3.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.47,
+            "explanation": "U=0.4700 [D=0.500 (3.0/6 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: pairwise_separation=0.500"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "inventory-api"
+            },
+            "distinguishing_score": 0.5,
+            "disjoint_pairs_count": 3.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.47,
+            "explanation": "U=0.4700 [D=0.500 (3.0/6 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: pairwise_separation=0.500"
+          },
+          {
+            "check_name": "check_inventory_cache_connectivity",
+            "params": {},
+            "distinguishing_score": 0.5,
+            "disjoint_pairs_count": 3.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.98,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 2.0,
+            "final_utility_score": 0.245,
+            "explanation": "U=0.2450 [D=0.500 (3.0/6 pairs), avail=1.00, rel=0.98, cost=2 (norm=2.0)]: pairwise_separation=0.500"
+          },
+          {
+            "check_name": "get_inventory_service_config",
+            "params": {},
+            "distinguishing_score": 0.5,
+            "disjoint_pairs_count": 3.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.97,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 2.0,
+            "final_utility_score": 0.2425,
+            "explanation": "U=0.2425 [D=0.500 (3.0/6 pairs), avail=1.00, rel=0.97, cost=2 (norm=2.0)]: pairwise_separation=0.500"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "inventory-api",
+              "limit": 20
+            },
+            "distinguishing_score": 0.125,
+            "disjoint_pairs_count": 0.75,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.1187,
+            "explanation": "U=0.1187 [D=0.125 (0.8/6 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: pairwise_separation=0.125"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "inventory-api"
+            },
+            "distinguishing_score": 0.0,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 6,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.0,
+            "explanation": "U=0.0000 [D=0.000 (0.0/6 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: pairwise_separation=0.000"
+          }
+        ],
+        "conflicts_active": [],
+        "budget_used": 1,
+        "budget_remaining": 2,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 2,
+        "timestamp_utc": "2026-10-21T10:26:59.725152Z",
+        "plausible_hypotheses_before": [
+          "IH2_INV_CACHE_UNAVAILABLE"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "inventory-cache"
+        },
+        "selection_rationale": "[scored_adaptive_v1] Selected highest utility check (U=0.8910 [D=0.900 (1.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: gate_recommended_for_IH2_INV_CACHE_UNAVAILABLE(+0.45))",
+        "evidence_id": "ev-02",
+        "evidence_status": "available",
+        "observation_summary": "Cache (inventory-cache) direct health check on 127.0.0.1:16379: reachable=False (cache_connection_refused).",
+        "hypothesis_updates": {
+          "IH1_INV_DB_UNAVAILABLE": "weakened -> refuted",
+          "IH3_INV_DB_CONFIG_ENDPOINT": "weakened -> refuted",
+          "IH4_INV_DB_OPERATION_DELAY": "weakened -> refuted"
+        },
+        "candidate_scores": [
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "inventory-cache"
+            },
+            "distinguishing_score": 0.9,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.891,
+            "explanation": "U=0.8910 [D=0.900 (1.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: gate_recommended_for_IH2_INV_CACHE_UNAVAILABLE(+0.45)"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "inventory-db"
+            },
+            "distinguishing_score": 0.55,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.5445,
+            "explanation": "U=0.5445 [D=0.550 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: gate_recommended_for_IH2_INV_CACHE_UNAVAILABLE(+0.45)"
+          },
+          {
+            "check_name": "check_inventory_cache_connectivity",
+            "params": {},
+            "distinguishing_score": 1.0,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.98,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 2.0,
+            "final_utility_score": 0.49,
+            "explanation": "U=0.4900 [D=1.000 (1.0/1 pairs), avail=1.00, rel=0.98, cost=2 (norm=2.0)]: directly_probes_inventory_cache(+0.55)"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "inventory-service",
+              "limit": 20
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.4275,
+            "explanation": "U=0.4275 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: corroborates IH2_INV_CACHE_UNAVAILABLE"
+          },
+          {
+            "check_name": "get_recent_logs",
+            "params": {
+              "service": "inventory-api",
+              "limit": 20
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.95,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.4275,
+            "explanation": "U=0.4275 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.95, cost=1 (norm=1.0)]: corroborates IH2_INV_CACHE_UNAVAILABLE"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "inventory-service"
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.423,
+            "explanation": "U=0.4230 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: corroborates IH2_INV_CACHE_UNAVAILABLE"
+          },
+          {
+            "check_name": "get_service_metrics",
+            "params": {
+              "service": "inventory-api"
+            },
+            "distinguishing_score": 0.45,
+            "disjoint_pairs_count": 1.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.94,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.423,
+            "explanation": "U=0.4230 [D=0.450 (1.0/1 pairs), avail=1.00, rel=0.94, cost=1 (norm=1.0)]: corroborates IH2_INV_CACHE_UNAVAILABLE"
+          },
+          {
+            "check_name": "check_inventory_db_connectivity",
+            "params": {},
+            "distinguishing_score": 0.55,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.98,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 2.0,
+            "final_utility_score": 0.2695,
+            "explanation": "U=0.2695 [D=0.550 (0.0/1 pairs), avail=1.00, rel=0.98, cost=2 (norm=2.0)]: gate_recommended_for_IH2_INV_CACHE_UNAVAILABLE(+0.45)"
+          },
+          {
+            "check_name": "get_service_health",
+            "params": {
+              "service": "inventory-api"
+            },
+            "distinguishing_score": 0.1,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.99,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 1,
+            "normalized_cost": 1.0,
+            "final_utility_score": 0.099,
+            "explanation": "U=0.0990 [D=0.100 (0.0/1 pairs), avail=1.00, rel=0.99, cost=1 (norm=1.0)]: corroborates IH2_INV_CACHE_UNAVAILABLE"
+          },
+          {
+            "check_name": "get_inventory_service_config",
+            "params": {},
+            "distinguishing_score": 0.1,
+            "disjoint_pairs_count": 0.0,
+            "total_pairs_count": 1,
+            "availability_factor": 1.0,
+            "reliability_factor": 0.97,
+            "staleness_refresh_bonus": 0.0,
+            "cost_units": 2,
+            "normalized_cost": 2.0,
+            "final_utility_score": 0.0485,
+            "explanation": "U=0.0485 [D=0.100 (0.0/1 pairs), avail=1.00, rel=0.97, cost=2 (norm=2.0)]: corroborates IH2_INV_CACHE_UNAVAILABLE"
+          }
+        ],
+        "conflicts_active": [],
+        "budget_used": 2,
+        "budget_remaining": 1,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 3,
+        "timestamp_utc": "2026-10-21T10:26:59.725225Z",
+        "plausible_hypotheses_before": [
+          "IH2_INV_CACHE_UNAVAILABLE"
+        ],
+        "chosen_check": null,
+        "chosen_params": {},
+        "selection_rationale": "Selector decided to stop (evidence_gate_satisfied).",
+        "evidence_id": null,
+        "evidence_status": null,
+        "observation_summary": null,
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 2,
+        "budget_remaining": 1,
+        "stop_decision": true,
+        "stop_reason": "evidence_gate_satisfied",
+        "ai_usage": null
+      }
+    ],
+    "evidence_gate_passed": true,
+    "evidence_gate_reason": "Confirmed inventory-cache is unreachable while inventory-db remains healthy.",
+    "recommended_next_checks": [],
+    "ai_metadata": null,
+    "ai_budget_snapshot": null,
+    "monotonic_elapsed_sec": 7.1984,
+    "monotonic_deadline_sec": 20.0,
+    "execution_error": null
+  },
+  "evaluation": {
+    "run_id": "run-inv_fault_cache_unavailable-e0-b3-scored_adaptive-r1-822c2c",
+    "scenario": "inv_fault_cache_unavailable",
+    "app_id": "inventory_app",
+    "split": "second_app",
+    "evidence_condition": "E0",
+    "method_name": "scored_adaptive_v1",
+    "budget_limit": 3,
+    "budget_used": 2,
+    "checks_executed": 2,
+    "outcome": "supported_diagnosis",
+    "failure_classification": "supported_diagnosis",
+    "predicted_service": "inventory-cache",
+    "predicted_fault_type": "cache_service_unavailable",
+    "predicted_causes": [
+      "inventory-cache:cache_service_unavailable"
+    ],
+    "expected_service": "inventory-cache",
+    "expected_fault_type": "cache_service_unavailable",
+    "expected_causes": [
+      "inventory-cache:cache_service_unavailable"
+    ],
+    "service_correct": true,
+    "fault_type_correct": true,
+    "joint_root_cause_accurate": true,
+    "cause_set_precision": 1.0,
+    "cause_set_recall": 1.0,
+    "exact_set_match": true,
+    "is_multi_fault_scenario": false,
+    "is_unknown_cause_scenario": false,
+    "unknown_cause_avoided_false_certainty": null,
+    "window_vs_current_separated_correctly": true,
+    "supported_diagnosis": true,
+    "inconclusive_outcome": false,
+    "honest_inconclusive": false,
+    "unsupported_confident_claim": false,
+    "overclaim_under_insufficient_evidence": false,
+    "false_attribution_rate_flag": false,
+    "execution_failure_flag": false,
+    "redundant_unavailable_count": 0,
+    "wall_clock_ms": 8284.12,
+    "ai_tokens_total": 0,
+    "ai_estimated_cost_usd": 0.0,
+    "ai_fallback_count": 0,
+    "scoring_notes": "Accurate diagnosis supported by cited evidence."
+  }
+}

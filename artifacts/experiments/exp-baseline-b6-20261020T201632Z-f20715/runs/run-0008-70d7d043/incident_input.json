@@ -1,0 +1,7 @@
+{
+  "incident_id": "inc-0008-11d6b825",
+  "symptom": "Customer order requests (POST /orders) require health verification and root-cause diagnosis if errors are present.",
+  "window_start_utc": "2026-10-20T20:17:17.165656Z",
+  "window_end_utc": "2026-10-20T20:17:18.341485Z",
+  "budget": 6
+}

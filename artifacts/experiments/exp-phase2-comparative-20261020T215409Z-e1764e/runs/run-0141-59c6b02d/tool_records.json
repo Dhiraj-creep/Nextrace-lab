@@ -1,0 +1,133 @@
+[
+  {
+    "evidence_id": "ev-0001-b3ac4c40",
+    "check_name": "get_service_health",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "health_status": "running_unready",
+      "liveness_http_status": 200,
+      "readiness_http_status": 503
+    },
+    "observed_at_utc": "2026-10-20T21:57:22.865998Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 93.27,
+    "payload_bytes": 116,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0002-b1cc41b7",
+    "check_name": "check_database_connectivity_from_order_service",
+    "target": "order-service->database",
+    "execution_status": "success",
+    "observation": {
+      "connectivity": "unreachable",
+      "reachable": false,
+      "network_reachable": true,
+      "database_usable": false,
+      "probe_category": "authentication_failure",
+      "target_host": "127.0.0.1",
+      "target_port": 15432,
+      "latency_ms": 29.514,
+      "error_category": "authentication_failure"
+    },
+    "observed_at_utc": "2026-10-20T21:57:22.928298Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 62.097,
+    "payload_bytes": 247,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0003-68952aac",
+    "check_name": "get_service_health",
+    "target": "database",
+    "execution_status": "unavailable",
+    "observation": null,
+    "observed_at_utc": "2026-10-20T21:57:22.928466Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 0.002,
+    "payload_bytes": 0,
+    "cost_charged": 1,
+    "error_detail": "Requested telemetry source is currently unavailable."
+  },
+  {
+    "evidence_id": "ev-0004-c1054f84",
+    "check_name": "get_recent_logs",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "record_count": 4,
+      "records": [
+        {
+          "timestamp_utc": "2026-10-20T21:57:21.475821Z",
+          "service": "order-service",
+          "request_id": "req-inc-3d773160",
+          "event": "request_received",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "path": "/orders",
+            "product_id": "workload-3d773160",
+            "quantity": 2
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T21:57:21.505610Z",
+          "service": "order-service",
+          "request_id": "req-inc-3d773160",
+          "event": "db_operation_attempted",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "operation": "insert_order",
+            "db_host": "127.0.0.1",
+            "db_port": 15432
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T21:57:21.568415Z",
+          "service": "order-service",
+          "request_id": "req-inc-3d773160",
+          "event": "dependency_failure",
+          "outcome": "failure",
+          "duration_ms": 62.804,
+          "error_category": "authentication_failure",
+          "details": {
+            "dependency": "database",
+            "db_host": "127.0.0.1",
+            "db_port": 15432,
+            "reason": "FATAL: password authentication failed for user 'nextrace_user'"
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T21:57:21.601420Z",
+          "service": "order-service",
+          "request_id": "req-inc-3d773160",
+          "event": "request_completed",
+          "outcome": "failure",
+          "duration_ms": 125.603,
+          "error_category": "dependency_error",
+          "details": {
+            "status_code": 503
+          }
+        }
+      ]
+    },
+    "observed_at_utc": "2026-10-20T21:57:22.932752Z",
+    "window_start_utc": "2026-10-20T21:57:21.374326Z",
+    "window_end_utc": "2026-10-20T21:57:21.726051Z",
+    "duration_ms": 4.116,
+    "payload_bytes": 1204,
+    "cost_charged": 1,
+    "error_detail": null
+  }
+]

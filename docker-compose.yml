@@ -1,0 +1,136 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nextrace-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-nextrace_orders}
+      POSTGRES_USER: ${DB_USER:-nextrace_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-nextrace_local_dev_pw}
+    ports:
+      - "${HOST_DB_PORT:-15432}:5432"
+    volumes:
+      - nextrace_pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  order-service:
+    build: .
+    container_name: nextrace-order-service
+    command: ["uvicorn", "services.order_service.app:app", "--host", "0.0.0.0", "--port", "8001"]
+    environment:
+      NEXTRACE_DB_DRIVER: postgresql
+      DB_HOST: ${ORDER_SERVICE_DB_HOST:-postgres}
+      DB_PORT: "5432"
+      DB_NAME: ${DB_NAME:-nextrace_orders}
+      DB_USER: ${DB_USER:-nextrace_user}
+      DB_PASSWORD: ${DB_PASSWORD:-nextrace_local_dev_pw}
+      DB_CONNECT_TIMEOUT_SEC: "1.5"
+      DB_STATEMENT_TIMEOUT_MS: "1500"
+      DB_LOCK_TIMEOUT_MS: "1000"
+      NEXTRACE_LOG_DIR: /app/var/logs
+      NEXTRACE_ORDER_CONFIG_OVERRIDE_FILE: /app/var/runtime/order_service_override.json
+    ports:
+      - "${HOST_ORDER_PORT:-18001}:8001"
+    volumes:
+      - ./var/logs:/app/var/logs
+      - ./var/runtime:/app/var/runtime
+    depends_on:
+      - postgres
+
+  gateway:
+    build: .
+    container_name: nextrace-gateway
+    command: ["uvicorn", "services.gateway.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      ORDER_SERVICE_URL: http://order-service:8001
+      ORDER_SERVICE_TIMEOUT_SEC: "2.5"
+      NEXTRACE_LOG_DIR: /app/var/logs
+    ports:
+      - "${HOST_GATEWAY_PORT:-18000}:8000"
+    volumes:
+      - ./var/logs:/app/var/logs
+    depends_on:
+      - order-service
+
+  # Inventory Application Services (Stage 6 / Stage 8 Real Backends)
+  inventory-db:
+    image: postgres:16-alpine
+    container_name: nextrace-inventory-db
+    environment:
+      POSTGRES_DB: ${INV_DB_NAME:-nextrace_inventory}
+      POSTGRES_USER: ${INV_DB_USER:-nextrace_user}
+      POSTGRES_PASSWORD: ${INV_DB_PASSWORD:-nextrace_local_dev_pw}
+    ports:
+      - "${HOST_INV_DB_PORT:-15433}:5432"
+    volumes:
+      - nextrace_inv_pgdata:/var/lib/postgresql/data
+      - ./db/init_inventory.sql:/docker-entrypoint-initdb.d/01-init-inventory.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  inventory-cache:
+    image: redis:7-alpine
+    container_name: nextrace-inventory-cache
+    ports:
+      - "${HOST_INV_CACHE_PORT:-16379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  inventory-service:
+    build: .
+    container_name: nextrace-inventory-service
+    command: ["uvicorn", "services.inventory_app.inventory_service_app:app", "--host", "0.0.0.0", "--port", "8011"]
+    environment:
+      INV_DB_DRIVER: ${INV_DB_DRIVER:-postgresql}
+      INV_CACHE_DRIVER: ${INV_CACHE_DRIVER:-redis}
+      INV_DB_HOST: ${INV_SERVICE_DB_HOST:-inventory-db}
+      INV_DB_PORT: "5432"
+      INV_DB_NAME: ${INV_DB_NAME:-nextrace_inventory}
+      INV_DB_USER: ${INV_DB_USER:-nextrace_user}
+      INV_DB_PASSWORD: ${INV_DB_PASSWORD:-nextrace_local_dev_pw}
+      INV_CACHE_HOST: ${INV_SERVICE_CACHE_HOST:-inventory-cache}
+      INV_CACHE_PORT: "6379"
+      INV_CACHE_MODE: required
+      INV_DB_CONNECT_TIMEOUT_SEC: "1.0"
+      INV_DB_STATEMENT_TIMEOUT_MS: "1500"
+      INV_DB_LOCK_TIMEOUT_MS: "1000"
+      NEXTRACE_LOG_DIR: /app/var/logs
+      NEXTRACE_INV_CONFIG_OVERRIDE_FILE: /app/var/runtime/inv_service_override.json
+      NEXTRACE_DB_FAULT_OVERRIDE_FILE: /app/var/runtime/inv_db_fault_override.json
+    ports:
+      - "${HOST_INV_SERVICE_PORT:-18011}:8011"
+    volumes:
+      - ./var/logs:/app/var/logs
+      - ./var/runtime:/app/var/runtime
+    depends_on:
+      - inventory-db
+      - inventory-cache
+
+  inventory-api:
+    build: .
+    container_name: nextrace-inventory-api
+    command: ["uvicorn", "services.inventory_app.api_app:app", "--host", "0.0.0.0", "--port", "8010"]
+    environment:
+      INVENTORY_SERVICE_URL: http://inventory-service:8011
+      INVENTORY_SERVICE_TIMEOUT_SEC: "2.5"
+      NEXTRACE_LOG_DIR: /app/var/logs
+    ports:
+      - "${HOST_INV_API_PORT:-18010}:8010"
+    volumes:
+      - ./var/logs:/app/var/logs
+    depends_on:
+      - inventory-service
+
+volumes:
+  nextrace_pgdata:
+  nextrace_inv_pgdata:

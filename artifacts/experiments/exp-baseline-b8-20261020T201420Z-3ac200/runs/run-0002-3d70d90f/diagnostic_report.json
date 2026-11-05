@@ -1,0 +1,25 @@
+{
+  "incident_id": "inc-0002-c6769f6b",
+  "method": "deterministic_checklist_v1",
+  "outcome": "healthy",
+  "predicted_service": null,
+  "predicted_fault_type": null,
+  "candidate_explanations": [],
+  "supporting_evidence_ids": [
+    "ev-0002-7432b166",
+    "ev-0003-54939505",
+    "ev-0006-c324ccf6",
+    "ev-0007-7a1616bb",
+    "ev-0008-1ebc2762"
+  ],
+  "contradictory_evidence_ids": [],
+  "missing_evidence": [
+    "get_recent_logs:gateway (unavailable)",
+    "get_recent_logs:order-service (unavailable)"
+  ],
+  "checks_attempted": 8,
+  "total_diagnostic_duration_ms": 256.064,
+  "total_returned_bytes": 1133,
+  "budget": 8,
+  "stop_reason": "healthy_confirmed"
+}

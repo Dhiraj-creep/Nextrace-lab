@@ -1,0 +1,272 @@
+[
+  {
+    "evidence_id": "ev-0001-ec4447fe",
+    "check_name": "get_dependency_specification",
+    "target": "application",
+    "execution_status": "success",
+    "observation": {
+      "application": "nextrace-orders-app",
+      "version": "0.1.0",
+      "services": {
+        "gateway": {
+          "role": "api_gateway",
+          "public_endpoint": "http://127.0.0.1:18000",
+          "dependencies": [
+            {
+              "target": "order-service",
+              "protocol": "http",
+              "expected_endpoint": "http://127.0.0.1:18001"
+            }
+          ]
+        },
+        "order-service": {
+          "role": "application_service",
+          "internal_endpoint": "http://127.0.0.1:18001",
+          "dependencies": [
+            {
+              "target": "database",
+              "protocol": "tcp",
+              "expected_db_host": "127.0.0.1",
+              "expected_db_port": 15432,
+              "expected_db_name": "nextrace_orders"
+            }
+          ]
+        },
+        "database": {
+          "role": "persistent_storage",
+          "expected_host": "127.0.0.1",
+          "expected_port": 15432,
+          "dependencies": []
+        }
+      }
+    },
+    "observed_at_utc": "2026-10-20T20:14:22.268160Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 0.587,
+    "payload_bytes": 601,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0002-605018d2",
+    "check_name": "get_service_health",
+    "target": "gateway",
+    "execution_status": "success",
+    "observation": {
+      "service": "gateway",
+      "health_status": "running_healthy",
+      "liveness_http_status": 200,
+      "readiness_http_status": 200
+    },
+    "observed_at_utc": "2026-10-20T20:14:22.340417Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 72.14,
+    "payload_bytes": 110,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0003-991ab981",
+    "check_name": "get_service_health",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "health_status": "running_healthy",
+      "liveness_http_status": 200,
+      "readiness_http_status": 200
+    },
+    "observed_at_utc": "2026-10-20T20:14:22.421501Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 80.989,
+    "payload_bytes": 116,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0004-6c80f298",
+    "check_name": "get_recent_logs",
+    "target": "gateway",
+    "execution_status": "success",
+    "observation": {
+      "service": "gateway",
+      "record_count": 3,
+      "records": [
+        {
+          "timestamp_utc": "2026-10-20T20:14:22.101440Z",
+          "service": "gateway",
+          "request_id": "req-inc-98a80ff5",
+          "event": "request_received",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "path": "/orders",
+            "product_id": "workload-run-0001-98a80ff5",
+            "quantity": 2
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T20:14:22.106519Z",
+          "service": "gateway",
+          "request_id": "req-inc-98a80ff5",
+          "event": "downstream_call",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "target_service": "order-service",
+            "endpoint": "/orders"
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T20:14:22.198117Z",
+          "service": "gateway",
+          "request_id": "req-inc-98a80ff5",
+          "event": "request_completed",
+          "outcome": "success",
+          "duration_ms": 96.653,
+          "error_category": null,
+          "details": {
+            "status_code": 201,
+            "order_id": "ord-c61913324f6d"
+          }
+        }
+      ]
+    },
+    "observed_at_utc": "2026-10-20T20:14:22.422644Z",
+    "window_start_utc": "2026-10-20T20:14:22.066952Z",
+    "window_end_utc": "2026-10-20T20:14:22.256041Z",
+    "duration_ms": 1.012,
+    "payload_bytes": 820,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0005-5600d260",
+    "check_name": "get_recent_logs",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "record_count": 4,
+      "records": [
+        {
+          "timestamp_utc": "2026-10-20T20:14:22.132289Z",
+          "service": "order-service",
+          "request_id": "req-inc-98a80ff5",
+          "event": "request_received",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "path": "/orders",
+            "product_id": "workload-run-0001-98a80ff5",
+            "quantity": 2
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T20:14:22.138945Z",
+          "service": "order-service",
+          "request_id": "req-inc-98a80ff5",
+          "event": "db_operation_attempted",
+          "outcome": "info",
+          "duration_ms": null,
+          "error_category": null,
+          "details": {
+            "operation": "insert_order",
+            "db_host": "127.0.0.1",
+            "db_port": 15432
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T20:14:22.184477Z",
+          "service": "order-service",
+          "request_id": "req-inc-98a80ff5",
+          "event": "order_persisted",
+          "outcome": "success",
+          "duration_ms": 45.523,
+          "error_category": null,
+          "details": {
+            "order_id": "ord-c61913324f6d",
+            "product_id": "workload-run-0001-98a80ff5",
+            "quantity": 2
+          }
+        },
+        {
+          "timestamp_utc": "2026-10-20T20:14:22.191249Z",
+          "service": "order-service",
+          "request_id": "req-inc-98a80ff5",
+          "event": "request_completed",
+          "outcome": "success",
+          "duration_ms": 58.968,
+          "error_category": null,
+          "details": {
+            "status_code": 201,
+            "order_id": "ord-c61913324f6d"
+          }
+        }
+      ]
+    },
+    "observed_at_utc": "2026-10-20T20:14:22.423484Z",
+    "window_start_utc": "2026-10-20T20:14:22.066952Z",
+    "window_end_utc": "2026-10-20T20:14:22.256041Z",
+    "duration_ms": 0.748,
+    "payload_bytes": 1154,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0006-719b8634",
+    "check_name": "check_database_connectivity_from_order_service",
+    "target": "order-service->database",
+    "execution_status": "success",
+    "observation": {
+      "connectivity": "reachable",
+      "reachable": true,
+      "target_host": "127.0.0.1",
+      "target_port": 15432,
+      "latency_ms": 20.155,
+      "error_category": null
+    },
+    "observed_at_utc": "2026-10-20T20:14:22.474044Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 50.458,
+    "payload_bytes": 133,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0007-5c85ca83",
+    "check_name": "get_order_service_database_config",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "db_host": "127.0.0.1",
+      "db_port": 15432,
+      "db_name": "nextrace_orders",
+      "connect_timeout_sec": 1.0
+    },
+    "observed_at_utc": "2026-10-20T20:14:22.483643Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 9.507,
+    "payload_bytes": 119,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0008-c9b800f7",
+    "check_name": "get_service_health",
+    "target": "database",
+    "execution_status": "success",
+    "observation": {
+      "service": "database",
+      "health_status": "running_healthy"
+    },
+    "observed_at_utc": "2026-10-20T20:14:22.512631Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 28.869,
+    "payload_bytes": 56,
+    "error_detail": null
+  }
+]

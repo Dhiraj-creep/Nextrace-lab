@@ -1,0 +1,466 @@
+{
+  "report": {
+    "run_id": "run-healthy-e1-b3-det_checklist_early_stop-r1-c3fb2f",
+    "method_name": "deterministic_checklist_early_stop_v1",
+    "method_version": "v1",
+    "app_id": "orders_app",
+    "started_at_utc": "2026-10-21T10:34:41.997842Z",
+    "completed_at_utc": "2026-10-21T10:34:42.151401Z",
+    "evaluation_time_utc": "2026-10-21T10:34:42.151401Z",
+    "runtime_mode": "local",
+    "backend_name": "local_sqlite_tcp",
+    "evidence_condition": "E1",
+    "budget_limit": 3,
+    "budget_used": 3,
+    "checks_executed": 3,
+    "unavailable_checks_count": 0,
+    "failed_checks_count": 0,
+    "invalid_checks_count": 0,
+    "redundant_unavailable_checks": 0,
+    "incident": {
+      "incident_id": "inc-cc01f463a3",
+      "observed_at_utc": "2026-10-21T10:34:41.997789Z",
+      "app_id": "orders_app",
+      "entry_endpoint": "POST /orders",
+      "request_id": "exp-healthy-e1-6a219f",
+      "http_status": 201,
+      "symptom_summary": "POST /orders returned HTTP 201 (succeeded)",
+      "response_excerpt": {
+        "order_id": "ord-8d1b6471fd",
+        "product_id": "sku-router-01",
+        "quantity": 1,
+        "request_id": "exp-healthy-e1-6a219f",
+        "created_at": "2026-10-21T10:34:41.927791Z"
+      }
+    },
+    "outcome": "inconclusive",
+    "failure_classification": "budget_exhaustion",
+    "candidate_service": null,
+    "candidate_fault_type": null,
+    "predicted_causes": [],
+    "window_diagnosis": null,
+    "current_health_status": "healthy_now",
+    "confidence_level": "low",
+    "uncertainty_summary": "System appears healthy from entry response, but downstream health checks were not completed.",
+    "evidence_cited": [
+      "ev-01",
+      "ev-02",
+      "ev-03"
+    ],
+    "evidence_records": [
+      {
+        "evidence_id": "ev-01",
+        "step_number": 1,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "gateway"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 86.17,
+        "timestamp_utc": "2026-10-21T10:34:41.997892Z",
+        "event_time_utc": "2026-10-21T10:34:42.083133Z",
+        "collection_time_utc": "2026-10-21T10:34:41.997892Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service gateway health: live=True, ready=True",
+        "data": {
+          "service": "gateway",
+          "live": true,
+          "ready": true,
+          "live_response": {
+            "service": "gateway",
+            "status": "live",
+            "timestamp": "2026-10-21T10:34:42.019811Z"
+          },
+          "ready_response": {
+            "service": "gateway",
+            "status": "ready",
+            "upstream_order_service": "reachable",
+            "latency_ms": 32.45,
+            "timestamp": "2026-10-21T10:34:42.083133Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:34:42.083133Z"
+        }
+      },
+      {
+        "evidence_id": "ev-02",
+        "step_number": 2,
+        "check_name": "get_recent_logs",
+        "params": {
+          "service": "gateway",
+          "limit": 20
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 0.82,
+        "timestamp_utc": "2026-10-21T10:34:42.084158Z",
+        "event_time_utc": "2026-10-21T10:34:41.992375Z",
+        "collection_time_utc": "2026-10-21T10:34:42.084158Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 60.0,
+        "is_stale": false,
+        "evidence_source": "historical_log",
+        "repeat_index": 1,
+        "summary": "Retrieved 4 recent log entries for gateway (0 ERROR entries; error_categories=[]).",
+        "data": {
+          "service": "gateway",
+          "entries_count": 4,
+          "error_count": 0,
+          "error_categories": [],
+          "observed_events": [
+            "order_request_received",
+            "order_request_succeeded"
+          ],
+          "event_time_utc": "2026-10-21T10:34:41.992375Z",
+          "entries": [
+            {
+              "timestamp": "2026-10-21T10:34:41.754828Z",
+              "timestamp_utc": "2026-10-21T10:34:41.754828Z",
+              "service": "gateway",
+              "level": "INFO",
+              "event": "order_request_received",
+              "request_id": "exp-healthy-e1-6a219f-warmup",
+              "product_id": "sku-router-01",
+              "quantity": 1,
+              "upstream_url": "http://127.0.0.1:18001"
+            },
+            {
+              "timestamp": "2026-10-21T10:34:41.865576Z",
+              "timestamp_utc": "2026-10-21T10:34:41.865576Z",
+              "service": "gateway",
+              "level": "INFO",
+              "event": "order_request_succeeded",
+              "request_id": "exp-healthy-e1-6a219f-warmup",
+              "order_id": "ord-caf47b5cf0",
+              "status_code": 201,
+              "duration_ms": 110.45
+            },
+            {
+              "timestamp": "2026-10-21T10:34:41.910383Z",
+              "timestamp_utc": "2026-10-21T10:34:41.910383Z",
+              "service": "gateway",
+              "level": "INFO",
+              "event": "order_request_received",
+              "request_id": "exp-healthy-e1-6a219f",
+              "product_id": "sku-router-01",
+              "quantity": 1,
+              "upstream_url": "http://127.0.0.1:18001"
+            },
+            {
+              "timestamp": "2026-10-21T10:34:41.992375Z",
+              "timestamp_utc": "2026-10-21T10:34:41.992375Z",
+              "service": "gateway",
+              "level": "INFO",
+              "event": "order_request_succeeded",
+              "request_id": "exp-healthy-e1-6a219f",
+              "order_id": "ord-8d1b6471fd",
+              "status_code": 201,
+              "duration_ms": 81.96
+            }
+          ]
+        }
+      },
+      {
+        "evidence_id": "ev-03",
+        "step_number": 3,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "order-service"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 66.22,
+        "timestamp_utc": "2026-10-21T10:34:42.085051Z",
+        "event_time_utc": "2026-10-21T10:34:42.149612Z",
+        "collection_time_utc": "2026-10-21T10:34:42.085051Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service order-service health: live=True, ready=True",
+        "data": {
+          "service": "order-service",
+          "live": true,
+          "ready": true,
+          "live_response": {
+            "service": "order-service",
+            "status": "live",
+            "timestamp": "2026-10-21T10:34:42.112812Z"
+          },
+          "ready_response": {
+            "service": "order-service",
+            "status": "ready",
+            "database_connectivity": "ok",
+            "latency_ms": 5.53,
+            "timestamp": "2026-10-21T10:34:42.149612Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:34:42.149612Z"
+        }
+      }
+    ],
+    "conflicts_detected": [],
+    "stale_evidence_ids": [],
+    "final_hypotheses": [
+      {
+        "hypothesis_id": "H0_NO_FAULT_HEALTHY",
+        "candidate_service": null,
+        "candidate_fault_type": null,
+        "description": "No active service fault; gateway, order-service, and database are healthy.",
+        "stance": "supported",
+        "confidence_level": "medium",
+        "supporting_evidence_ids": [
+          "ev-03"
+        ],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H1_ORDER_DB_CONFIG_ENDPOINT",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "db_endpoint_misconfiguration",
+        "description": "order-service is configured with an invalid or unresolvable database hostname.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H2_DATABASE_UNAVAILABLE",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_service_unavailable",
+        "description": "The database process/container is stopped or unreachable on its listening port.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H3_ORDER_DB_AUTH_FAILURE",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "db_auth_failure",
+        "description": "order-service is configured with invalid database credentials rejected by authentication.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H4_DATABASE_SCHEMA_MISSING",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_schema_missing_table",
+        "description": "The database is reachable, but the active schema is missing the required 'orders' table.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H5_DATABASE_OPERATION_DELAY",
+        "candidate_service": "database",
+        "candidate_fault_type": "db_operation_delay",
+        "description": "Database queries experience high latency exceeding order-service's operation deadline.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "H6_ORDER_SERVICE_UNAVAILABLE",
+        "candidate_service": "order-service",
+        "candidate_fault_type": "order_service_unavailable",
+        "description": "The order-service process/container is stopped or unreachable from the gateway.",
+        "stance": "refuted",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [
+          "ev-01",
+          "ev-03"
+        ],
+        "missing_evidence_notes": []
+      }
+    ],
+    "decision_log": [
+      {
+        "step_number": 1,
+        "timestamp_utc": "2026-10-21T10:34:42.084108Z",
+        "plausible_hypotheses_before": [
+          "H0_NO_FAULT_HEALTHY",
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY",
+          "H6_ORDER_SERVICE_UNAVAILABLE"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "gateway"
+        },
+        "selection_rationale": "Fixed step 1: Verify entry gateway liveness and readiness.",
+        "evidence_id": "ev-01",
+        "evidence_status": "available",
+        "observation_summary": "Service gateway health: live=True, ready=True",
+        "hypothesis_updates": {
+          "H6_ORDER_SERVICE_UNAVAILABLE": "plausible -> refuted"
+        },
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 1,
+        "budget_remaining": 2,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 2,
+        "timestamp_utc": "2026-10-21T10:34:42.085008Z",
+        "plausible_hypotheses_before": [
+          "H0_NO_FAULT_HEALTHY",
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY"
+        ],
+        "chosen_check": "get_recent_logs",
+        "chosen_params": {
+          "service": "gateway",
+          "limit": 20
+        },
+        "selection_rationale": "Fixed step 2: Inspect gateway logs for upstream forwarding errors.",
+        "evidence_id": "ev-02",
+        "evidence_status": "available",
+        "observation_summary": "Retrieved 4 recent log entries for gateway (0 ERROR entries; error_categories=[]).",
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 2,
+        "budget_remaining": 1,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 3,
+        "timestamp_utc": "2026-10-21T10:34:42.151327Z",
+        "plausible_hypotheses_before": [
+          "H0_NO_FAULT_HEALTHY",
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "order-service"
+        },
+        "selection_rationale": "Fixed step 3: Check order-service liveness and readiness.",
+        "evidence_id": "ev-03",
+        "evidence_status": "available",
+        "observation_summary": "Service order-service health: live=True, ready=True",
+        "hypothesis_updates": {
+          "H0_NO_FAULT_HEALTHY": "plausible -> supported"
+        },
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 3,
+        "budget_remaining": 0,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 4,
+        "timestamp_utc": "2026-10-21T10:34:42.151387Z",
+        "plausible_hypotheses_before": [
+          "H0_NO_FAULT_HEALTHY",
+          "H1_ORDER_DB_CONFIG_ENDPOINT",
+          "H2_DATABASE_UNAVAILABLE",
+          "H3_ORDER_DB_AUTH_FAILURE",
+          "H4_DATABASE_SCHEMA_MISSING",
+          "H5_DATABASE_OPERATION_DELAY"
+        ],
+        "chosen_check": null,
+        "chosen_params": {},
+        "selection_rationale": "Selector decided to stop (budget_exhausted).",
+        "evidence_id": null,
+        "evidence_status": null,
+        "observation_summary": null,
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 3,
+        "budget_remaining": 0,
+        "stop_decision": true,
+        "stop_reason": "budget_exhausted",
+        "ai_usage": null
+      }
+    ],
+    "evidence_gate_passed": false,
+    "evidence_gate_reason": "Entry request succeeded, but insufficient health checks were executed to verify full system readiness.",
+    "recommended_next_checks": [
+      "get_service_health(order-service)",
+      "get_service_health(database)"
+    ],
+    "ai_metadata": null,
+    "ai_budget_snapshot": null,
+    "monotonic_elapsed_sec": 1.4135,
+    "monotonic_deadline_sec": 20.0,
+    "execution_error": null
+  },
+  "evaluation": {
+    "run_id": "run-healthy-e1-b3-det_checklist_early_stop-r1-c3fb2f",
+    "scenario": "healthy",
+    "app_id": "orders_app",
+    "split": "development",
+    "evidence_condition": "E1",
+    "method_name": "deterministic_checklist_early_stop_v1",
+    "budget_limit": 3,
+    "budget_used": 3,
+    "checks_executed": 3,
+    "outcome": "inconclusive",
+    "failure_classification": "budget_exhaustion",
+    "predicted_service": null,
+    "predicted_fault_type": null,
+    "predicted_causes": [],
+    "expected_service": null,
+    "expected_fault_type": null,
+    "expected_causes": [],
+    "service_correct": false,
+    "fault_type_correct": false,
+    "joint_root_cause_accurate": false,
+    "cause_set_precision": 0.0,
+    "cause_set_recall": 0.0,
+    "exact_set_match": false,
+    "is_multi_fault_scenario": false,
+    "is_unknown_cause_scenario": false,
+    "unknown_cause_avoided_false_certainty": null,
+    "window_vs_current_separated_correctly": true,
+    "supported_diagnosis": false,
+    "inconclusive_outcome": true,
+    "honest_inconclusive": true,
+    "unsupported_confident_claim": false,
+    "overclaim_under_insufficient_evidence": false,
+    "false_attribution_rate_flag": false,
+    "execution_failure_flag": false,
+    "redundant_unavailable_count": 0,
+    "wall_clock_ms": 2444.9,
+    "ai_tokens_total": 0,
+    "ai_estimated_cost_usd": 0.0,
+    "ai_fallback_count": 0,
+    "scoring_notes": "Honest inconclusive outcome under insufficient/blocked evidence."
+  }
+}

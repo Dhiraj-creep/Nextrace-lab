@@ -1,0 +1,26 @@
+{
+  "incident_id": "inc-0005-3807cf2e",
+  "method": "deterministic_checklist_v1",
+  "outcome": "diagnosed",
+  "predicted_service": "order-service",
+  "predicted_fault_type": "db_endpoint_misconfiguration",
+  "candidate_explanations": [],
+  "supporting_evidence_ids": [
+    "ev-0001-3f46a528",
+    "ev-0002-078e5e62",
+    "ev-0003-b586eef8",
+    "ev-0006-efd68f5f",
+    "ev-0007-56c6afca",
+    "ev-0008-1eb13614"
+  ],
+  "contradictory_evidence_ids": [],
+  "missing_evidence": [
+    "get_recent_logs:gateway (unavailable)",
+    "get_recent_logs:order-service (unavailable)"
+  ],
+  "checks_attempted": 8,
+  "total_diagnostic_duration_ms": 241.45,
+  "total_returned_bytes": 1190,
+  "budget": 8,
+  "stop_reason": "diagnosis_reached"
+}

@@ -1,0 +1,40 @@
+[
+  {
+    "evidence_id": "ev-0001-6a30bf7e",
+    "check_name": "get_service_health",
+    "target": "order-service",
+    "execution_status": "success",
+    "observation": {
+      "service": "order-service",
+      "health_status": "unreachable",
+      "liveness_http_status": null,
+      "readiness_http_status": null
+    },
+    "observed_at_utc": "2026-10-20T22:09:40.274930Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 1018.283,
+    "payload_bytes": 114,
+    "cost_charged": 1,
+    "error_detail": null
+  },
+  {
+    "evidence_id": "ev-0002-17634235",
+    "check_name": "get_service_health",
+    "target": "gateway",
+    "execution_status": "success",
+    "observation": {
+      "service": "gateway",
+      "health_status": "running_unready",
+      "liveness_http_status": 200,
+      "readiness_http_status": 503
+    },
+    "observed_at_utc": "2026-10-20T22:09:41.344762Z",
+    "window_start_utc": null,
+    "window_end_utc": null,
+    "duration_ms": 1068.451,
+    "payload_bytes": 110,
+    "cost_charged": 1,
+    "error_detail": null
+  }
+]

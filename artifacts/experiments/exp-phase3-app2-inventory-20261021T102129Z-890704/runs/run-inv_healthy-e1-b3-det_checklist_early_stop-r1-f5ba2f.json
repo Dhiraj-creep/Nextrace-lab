@@ -1,0 +1,435 @@
+{
+  "report": {
+    "run_id": "run-inv_healthy-e1-b3-det_checklist_early_stop-r1-f5ba2f",
+    "method_name": "deterministic_checklist_early_stop_v1",
+    "method_version": "v1",
+    "app_id": "inventory_app",
+    "started_at_utc": "2026-10-21T10:22:03.493593Z",
+    "completed_at_utc": "2026-10-21T10:22:03.609960Z",
+    "evaluation_time_utc": "2026-10-21T10:22:03.609960Z",
+    "runtime_mode": "local",
+    "backend_name": "local_sqlite_tcp_and_local_tcp_cache_substitute",
+    "evidence_condition": "E1",
+    "budget_limit": 3,
+    "budget_used": 3,
+    "checks_executed": 3,
+    "unavailable_checks_count": 0,
+    "failed_checks_count": 0,
+    "invalid_checks_count": 0,
+    "redundant_unavailable_checks": 0,
+    "incident": {
+      "incident_id": "inc-bc760b7925",
+      "observed_at_utc": "2026-10-21T10:22:03.493555Z",
+      "app_id": "inventory_app",
+      "entry_endpoint": "POST /inventory/reserve",
+      "request_id": "exp-inv_healthy-e1-fc23df",
+      "http_status": 201,
+      "symptom_summary": "POST /inventory/reserve returned HTTP 201 (succeeded)",
+      "response_excerpt": {
+        "reservation_id": "rsv-c4dc01a2e6",
+        "sku": "sku-laptop-101",
+        "quantity": 2,
+        "request_id": "exp-inv_healthy-e1-fc23df",
+        "created_at": "2026-10-21T10:22:03.487225Z"
+      }
+    },
+    "outcome": "inconclusive",
+    "failure_classification": "budget_exhaustion",
+    "candidate_service": null,
+    "candidate_fault_type": null,
+    "predicted_causes": [],
+    "window_diagnosis": null,
+    "current_health_status": "healthy_now",
+    "confidence_level": "low",
+    "uncertainty_summary": "System appears healthy from entry response, but downstream health checks were not completed.",
+    "evidence_cited": [
+      "ev-01",
+      "ev-02",
+      "ev-03"
+    ],
+    "evidence_records": [
+      {
+        "evidence_id": "ev-01",
+        "step_number": 1,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "inventory-api"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 39.54,
+        "timestamp_utc": "2026-10-21T10:22:03.493630Z",
+        "event_time_utc": "2026-10-21T10:22:03.532270Z",
+        "collection_time_utc": "2026-10-21T10:22:03.493630Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service inventory-api health: live=True, ready=True",
+        "data": {
+          "service": "inventory-api",
+          "live": true,
+          "ready": true,
+          "live_response": {
+            "service": "inventory-api",
+            "status": "live",
+            "timestamp": "2026-10-21T10:22:03.502428Z"
+          },
+          "ready_response": {
+            "service": "inventory-api",
+            "status": "ready",
+            "upstream_inventory_service": "reachable",
+            "latency_ms": 20.91,
+            "timestamp": "2026-10-21T10:22:03.532270Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:22:03.532270Z"
+        }
+      },
+      {
+        "evidence_id": "ev-02",
+        "step_number": 2,
+        "check_name": "get_recent_logs",
+        "params": {
+          "service": "inventory-api",
+          "limit": 20
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 0.83,
+        "timestamp_utc": "2026-10-21T10:22:03.533274Z",
+        "event_time_utc": "2026-10-21T10:22:03.488300Z",
+        "collection_time_utc": "2026-10-21T10:22:03.533274Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 60.0,
+        "is_stale": false,
+        "evidence_source": "historical_log",
+        "repeat_index": 1,
+        "summary": "Retrieved 4 recent log entries for inventory-api (0 ERROR entries; error_categories=[]).",
+        "data": {
+          "service": "inventory-api",
+          "entries_count": 4,
+          "error_count": 0,
+          "error_categories": [],
+          "observed_events": [
+            "inventory_reserve_received",
+            "inventory_reserve_succeeded"
+          ],
+          "event_time_utc": "2026-10-21T10:22:03.488300Z",
+          "entries": [
+            {
+              "timestamp": "2026-10-21T10:22:03.191614Z",
+              "timestamp_utc": "2026-10-21T10:22:03.191614Z",
+              "service": "inventory-api",
+              "level": "INFO",
+              "event": "inventory_reserve_received",
+              "request_id": "exp-inv_healthy-e1-fc23df-warmup",
+              "sku": "sku-laptop-101",
+              "quantity": 1,
+              "upstream_url": "http://127.0.0.1:18011"
+            },
+            {
+              "timestamp": "2026-10-21T10:22:03.337635Z",
+              "timestamp_utc": "2026-10-21T10:22:03.337635Z",
+              "service": "inventory-api",
+              "level": "INFO",
+              "event": "inventory_reserve_succeeded",
+              "request_id": "exp-inv_healthy-e1-fc23df-warmup",
+              "reservation_id": "rsv-8030e2ac80",
+              "status_code": 201,
+              "duration_ms": 145.99
+            },
+            {
+              "timestamp": "2026-10-21T10:22:03.375013Z",
+              "timestamp_utc": "2026-10-21T10:22:03.375013Z",
+              "service": "inventory-api",
+              "level": "INFO",
+              "event": "inventory_reserve_received",
+              "request_id": "exp-inv_healthy-e1-fc23df",
+              "sku": "sku-laptop-101",
+              "quantity": 2,
+              "upstream_url": "http://127.0.0.1:18011"
+            },
+            {
+              "timestamp": "2026-10-21T10:22:03.488300Z",
+              "timestamp_utc": "2026-10-21T10:22:03.488300Z",
+              "service": "inventory-api",
+              "level": "INFO",
+              "event": "inventory_reserve_succeeded",
+              "request_id": "exp-inv_healthy-e1-fc23df",
+              "reservation_id": "rsv-c4dc01a2e6",
+              "status_code": 201,
+              "duration_ms": 113.26
+            }
+          ]
+        }
+      },
+      {
+        "evidence_id": "ev-03",
+        "step_number": 3,
+        "check_name": "get_service_health",
+        "params": {
+          "service": "inventory-service"
+        },
+        "status": "available",
+        "cost_units": 1,
+        "latency_ms": 75.64,
+        "timestamp_utc": "2026-10-21T10:22:03.534211Z",
+        "event_time_utc": "2026-10-21T10:22:03.608896Z",
+        "collection_time_utc": "2026-10-21T10:22:03.534211Z",
+        "observation_interval_sec": null,
+        "freshness_ttl_sec": 15.0,
+        "is_stale": false,
+        "evidence_source": "live_probe",
+        "repeat_index": 1,
+        "summary": "Service inventory-service health: live=True, ready=True",
+        "data": {
+          "service": "inventory-service",
+          "live": true,
+          "ready": true,
+          "live_response": {
+            "service": "inventory-service",
+            "status": "live",
+            "timestamp": "2026-10-21T10:22:03.562983Z"
+          },
+          "ready_response": {
+            "service": "inventory-service",
+            "status": "ready",
+            "database_connectivity": "ok",
+            "cache_connectivity": "ok",
+            "latency_ms": 36.37,
+            "timestamp": "2026-10-21T10:22:03.608896Z"
+          },
+          "unreachable_reason": null,
+          "event_time_utc": "2026-10-21T10:22:03.608896Z"
+        }
+      }
+    ],
+    "conflicts_detected": [],
+    "stale_evidence_ids": [],
+    "final_hypotheses": [
+      {
+        "hypothesis_id": "IH0_NO_FAULT_HEALTHY",
+        "candidate_service": null,
+        "candidate_fault_type": null,
+        "description": "All inventory_app services, database, and cache are healthy.",
+        "stance": "supported",
+        "confidence_level": "medium",
+        "supporting_evidence_ids": [
+          "ev-03"
+        ],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "IH1_INV_DB_UNAVAILABLE",
+        "candidate_service": "inventory-db",
+        "candidate_fault_type": "db_service_unavailable",
+        "description": "inventory-db service is stopped or unreachable while inventory-cache remains healthy.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "IH2_INV_CACHE_UNAVAILABLE",
+        "candidate_service": "inventory-cache",
+        "candidate_fault_type": "cache_service_unavailable",
+        "description": "inventory-cache service is stopped or unreachable while inventory-db remains healthy.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "IH3_INV_DB_CONFIG_ENDPOINT",
+        "candidate_service": "inventory-service",
+        "candidate_fault_type": "db_endpoint_misconfiguration",
+        "description": "inventory-service is configured with an invalid/unresolvable database hostname.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      },
+      {
+        "hypothesis_id": "IH4_INV_DB_OPERATION_DELAY",
+        "candidate_service": "inventory-db",
+        "candidate_fault_type": "db_operation_delay",
+        "description": "inventory-db operations experience high latency exceeding inventory-service timeout.",
+        "stance": "plausible",
+        "confidence_level": "low",
+        "supporting_evidence_ids": [],
+        "refuting_evidence_ids": [],
+        "missing_evidence_notes": []
+      }
+    ],
+    "decision_log": [
+      {
+        "step_number": 1,
+        "timestamp_utc": "2026-10-21T10:22:03.533221Z",
+        "plausible_hypotheses_before": [
+          "IH0_NO_FAULT_HEALTHY",
+          "IH1_INV_DB_UNAVAILABLE",
+          "IH2_INV_CACHE_UNAVAILABLE",
+          "IH3_INV_DB_CONFIG_ENDPOINT",
+          "IH4_INV_DB_OPERATION_DELAY"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "inventory-api"
+        },
+        "selection_rationale": "Fixed step 1: Verify inventory-api liveness and readiness.",
+        "evidence_id": "ev-01",
+        "evidence_status": "available",
+        "observation_summary": "Service inventory-api health: live=True, ready=True",
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 1,
+        "budget_remaining": 2,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 2,
+        "timestamp_utc": "2026-10-21T10:22:03.534167Z",
+        "plausible_hypotheses_before": [
+          "IH0_NO_FAULT_HEALTHY",
+          "IH1_INV_DB_UNAVAILABLE",
+          "IH2_INV_CACHE_UNAVAILABLE",
+          "IH3_INV_DB_CONFIG_ENDPOINT",
+          "IH4_INV_DB_OPERATION_DELAY"
+        ],
+        "chosen_check": "get_recent_logs",
+        "chosen_params": {
+          "service": "inventory-api",
+          "limit": 20
+        },
+        "selection_rationale": "Fixed step 2: Inspect inventory-api logs for upstream forwarding errors.",
+        "evidence_id": "ev-02",
+        "evidence_status": "available",
+        "observation_summary": "Retrieved 4 recent log entries for inventory-api (0 ERROR entries; error_categories=[]).",
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 2,
+        "budget_remaining": 1,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 3,
+        "timestamp_utc": "2026-10-21T10:22:03.609893Z",
+        "plausible_hypotheses_before": [
+          "IH0_NO_FAULT_HEALTHY",
+          "IH1_INV_DB_UNAVAILABLE",
+          "IH2_INV_CACHE_UNAVAILABLE",
+          "IH3_INV_DB_CONFIG_ENDPOINT",
+          "IH4_INV_DB_OPERATION_DELAY"
+        ],
+        "chosen_check": "get_service_health",
+        "chosen_params": {
+          "service": "inventory-service"
+        },
+        "selection_rationale": "Fixed step 3: Check inventory-service liveness and readiness.",
+        "evidence_id": "ev-03",
+        "evidence_status": "available",
+        "observation_summary": "Service inventory-service health: live=True, ready=True",
+        "hypothesis_updates": {
+          "IH0_NO_FAULT_HEALTHY": "plausible -> supported"
+        },
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 3,
+        "budget_remaining": 0,
+        "stop_decision": false,
+        "stop_reason": null,
+        "ai_usage": null
+      },
+      {
+        "step_number": 4,
+        "timestamp_utc": "2026-10-21T10:22:03.609948Z",
+        "plausible_hypotheses_before": [
+          "IH0_NO_FAULT_HEALTHY",
+          "IH1_INV_DB_UNAVAILABLE",
+          "IH2_INV_CACHE_UNAVAILABLE",
+          "IH3_INV_DB_CONFIG_ENDPOINT",
+          "IH4_INV_DB_OPERATION_DELAY"
+        ],
+        "chosen_check": null,
+        "chosen_params": {},
+        "selection_rationale": "Selector decided to stop (budget_exhausted).",
+        "evidence_id": null,
+        "evidence_status": null,
+        "observation_summary": null,
+        "hypothesis_updates": {},
+        "candidate_scores": [],
+        "conflicts_active": [],
+        "budget_used": 3,
+        "budget_remaining": 0,
+        "stop_decision": true,
+        "stop_reason": "budget_exhausted",
+        "ai_usage": null
+      }
+    ],
+    "evidence_gate_passed": false,
+    "evidence_gate_reason": "Entry request succeeded, but insufficient health checks were executed to verify full system readiness.",
+    "recommended_next_checks": [
+      "get_service_health(order-service)",
+      "get_service_health(database)"
+    ],
+    "ai_metadata": null,
+    "ai_budget_snapshot": null,
+    "monotonic_elapsed_sec": 1.9023,
+    "monotonic_deadline_sec": 20.0,
+    "execution_error": null
+  },
+  "evaluation": {
+    "run_id": "run-inv_healthy-e1-b3-det_checklist_early_stop-r1-f5ba2f",
+    "scenario": "inv_healthy",
+    "app_id": "inventory_app",
+    "split": "second_app",
+    "evidence_condition": "E1",
+    "method_name": "deterministic_checklist_early_stop_v1",
+    "budget_limit": 3,
+    "budget_used": 3,
+    "checks_executed": 3,
+    "outcome": "inconclusive",
+    "failure_classification": "budget_exhaustion",
+    "predicted_service": null,
+    "predicted_fault_type": null,
+    "predicted_causes": [],
+    "expected_service": null,
+    "expected_fault_type": null,
+    "expected_causes": [],
+    "service_correct": false,
+    "fault_type_correct": false,
+    "joint_root_cause_accurate": false,
+    "cause_set_precision": 0.0,
+    "cause_set_recall": 0.0,
+    "exact_set_match": false,
+    "is_multi_fault_scenario": false,
+    "is_unknown_cause_scenario": false,
+    "unknown_cause_avoided_false_certainty": null,
+    "window_vs_current_separated_correctly": true,
+    "supported_diagnosis": false,
+    "inconclusive_outcome": true,
+    "honest_inconclusive": true,
+    "unsupported_confident_claim": false,
+    "overclaim_under_insufficient_evidence": false,
+    "false_attribution_rate_flag": false,
+    "execution_failure_flag": false,
+    "redundant_unavailable_count": 0,
+    "wall_clock_ms": 3332.47,
+    "ai_tokens_total": 0,
+    "ai_estimated_cost_usd": 0.0,
+    "ai_fallback_count": 0,
+    "scoring_notes": "Honest inconclusive outcome under insufficient/blocked evidence."
+  }
+}

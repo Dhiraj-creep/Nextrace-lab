@@ -1,0 +1,111 @@
+# NexTrace Comparative Experiment Report — `exp-v040-stopping-first-cause-20261022T191513Z-6ab221`
+
+## 1. Provenance & Environment Metadata
+- **Created (UTC)**: `2026-10-22T19:22:32.278192Z`
+- **Git Commit**: `uncommitted-worktree`
+- **Source Content Manifest Digest (SHA-256)**: `cfdce351767b8e00fb3a329f825c0c7b8c5dd4f36fd681015c3cbe285d89be01`
+- **Config Hash**: `6ab221db1c70`
+- **Stopping Policy Mode**: `first_supported_cause`
+- **Random Seed**: `42` (`counterbalance_methods=True`)
+- **Runtime Mode**: `local`
+- **Active Backend(s)**: `local_sqlite_tcp_and_local_tcp_cache_substitute, local_sqlite_tcp`
+- **Applications Evaluated**: `['inventory_app', 'orders_app']`
+- **Python / Platform**: `3.14.7` on `Windows-11-10.0.26300-SP0`
+- **Methods Compared**: `['deterministic_checklist_v1', 'improved_checklist_v1', 'scored_adaptive_v2']`
+- **Budgets Evaluated**: `[8, 12]`
+- **Evidence Conditions**: `['E0', 'E1']`
+- **Repetitions per Cell**: `1`
+
+## 2. Aggregate Comparison by Method
+
+| Method | Runs | Joint Root-Cause Acc | Cause-Set Precision | Cause-Set Recall | Supported Diag Rate | Honest Inconclusive | Overclaim Rate | Avg Budget Used | Avg Checks | Redundant Unavail |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `deterministic_checklist_v1` | 16 | 0.00% | 87.50% | 43.75% | 87.50% | 12.50% | 0.00% | 5.38 | 4.12 | 0 |
+| `improved_checklist_v1` | 16 | 50.00% | 100.00% | 75.00% | 100.00% | 0.00% | 0.00% | 2.25 | 2.25 | 0 |
+| `scored_adaptive_v2` | 16 | 25.00% | 100.00% | 62.50% | 100.00% | 0.00% | 0.00% | 2.75 | 2.75 | 0 |
+
+## 3. Method Performance by Scenario Split
+
+| Method | Split | Runs | Joint Root-Cause Acc | Exact Set Match | Supported Rate | Honest Inconclusive | Overclaim Rate | Avg Budget |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| `deterministic_checklist_v1` | `multi_fault` | 12 | 0.00% | 0.00% | 100.00% | 0.00% | 0.00% | 4.33 |
+| `deterministic_checklist_v1` | `second_app` | 4 | 0.00% | 0.00% | 50.00% | 50.00% | 0.00% | 8.50 |
+| `improved_checklist_v1` | `multi_fault` | 12 | 33.33% | 33.33% | 100.00% | 0.00% | 0.00% | 2.00 |
+| `improved_checklist_v1` | `second_app` | 4 | 100.00% | 100.00% | 100.00% | 0.00% | 0.00% | 3.00 |
+| `scored_adaptive_v2` | `multi_fault` | 12 | 16.67% | 16.67% | 100.00% | 0.00% | 0.00% | 2.50 |
+| `scored_adaptive_v2` | `second_app` | 4 | 50.00% | 50.00% | 100.00% | 0.00% | 0.00% | 3.50 |
+
+## 4. Method Performance by Evidence Condition (E0–E5)
+
+| Method | Condition | Runs | Joint Root-Cause Acc | Supported Rate | Honest Inconclusive | Overclaim Rate | Avg Budget |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `deterministic_checklist_v1` | `E0` | 8 | 0.00% | 87.50% | 12.50% | 0.00% | 5.38 |
+| `deterministic_checklist_v1` | `E1` | 8 | 0.00% | 87.50% | 12.50% | 0.00% | 5.38 |
+| `improved_checklist_v1` | `E0` | 8 | 50.00% | 100.00% | 0.00% | 0.00% | 2.25 |
+| `improved_checklist_v1` | `E1` | 8 | 50.00% | 100.00% | 0.00% | 0.00% | 2.25 |
+| `scored_adaptive_v2` | `E0` | 8 | 25.00% | 100.00% | 0.00% | 0.00% | 2.50 |
+| `scored_adaptive_v2` | `E1` | 8 | 25.00% | 100.00% | 0.00% | 0.00% | 3.00 |
+
+## 5. Method Performance by Budget Limit
+
+| Method | Budget | Runs | Joint Root-Cause Acc | Supported Rate | Honest Inconclusive | Avg Budget Used |
+|---|---:|---:|---:|---:|---:|---:|
+| `deterministic_checklist_v1` | `8` | 8 | 0.00% | 75.00% | 25.00% | 5.25 |
+| `deterministic_checklist_v1` | `12` | 8 | 0.00% | 100.00% | 0.00% | 5.50 |
+| `improved_checklist_v1` | `8` | 8 | 50.00% | 100.00% | 0.00% | 2.25 |
+| `improved_checklist_v1` | `12` | 8 | 50.00% | 100.00% | 0.00% | 2.25 |
+| `scored_adaptive_v2` | `8` | 8 | 25.00% | 100.00% | 0.00% | 2.75 |
+| `scored_adaptive_v2` | `12` | 8 | 25.00% | 100.00% | 0.00% | 2.75 |
+
+## 6. Per-Run Score Table
+
+| Run ID | App | Scenario | Split | Cond | Method | Budget (Used/Lim) | Checks | Outcome | Class | Predicted Causes | Expected Causes | Joint Acc | Set Prec/Rec |
+|---|---|---|---|---|---|---:|---:|---|---|---|---|---|---|
+| `run-multi_fault_a_and_b-e0-b8-det_checklist-r1-bb27ed` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E0` | `deterministic_checklist_v1` | 5/8 | 4 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_endpoint_misconfiguration` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e0-b8-improved_checklist-r1-288520` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E0` | `improved_checklist_v1` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e0-b8-scored_adaptive_v2-r1-dce027` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E0` | `scored_adaptive_v2` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_endpoint_misconfiguration` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e0-b12-improved_checklist-r1-51c2f0` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E0` | `improved_checklist_v1` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e0-b12-scored_adaptive_v2-r1-c3ff77` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E0` | `scored_adaptive_v2` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_endpoint_misconfiguration` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e0-b12-det_checklist-r1-058a86` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E0` | `deterministic_checklist_v1` | 5/12 | 4 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_endpoint_misconfiguration` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e1-b8-scored_adaptive_v2-r1-3772f8` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E1` | `scored_adaptive_v2` | 3/8 | 3 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e1-b8-det_checklist-r1-7ff4de` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E1` | `deterministic_checklist_v1` | 5/8 | 4 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_endpoint_misconfiguration` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e1-b8-improved_checklist-r1-d1fb29` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E1` | `improved_checklist_v1` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e1-b12-det_checklist-r1-fdbdef` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E1` | `deterministic_checklist_v1` | 5/12 | 4 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_endpoint_misconfiguration` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e1-b12-improved_checklist-r1-1c6cba` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E1` | `improved_checklist_v1` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_a_and_b-e1-b12-scored_adaptive_v2-r1-da2409` | `orders_app` | `multi_fault_a_and_b` | `multi_fault` | `E1` | `scored_adaptive_v2` | 3/12 | 3 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable` | `database:db_service_unavailable, order-service:db_endpoint_misconfiguration` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e0-b8-improved_checklist-r1-5dd2d4` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E0` | `improved_checklist_v1` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_schema_missing_table` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e0-b8-scored_adaptive_v2-r1-74aaa9` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E0` | `scored_adaptive_v2` | 3/8 | 3 | `supported_diagnosis` | `supported_diagnosis` | `database:db_schema_missing_table, order-service:db_auth_failure` | `database:db_schema_missing_table, order-service:db_auth_failure` | `True` | 1.00/1.00 |
+| `run-multi_fault_c_and_d-e0-b8-det_checklist-r1-5d24cd` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E0` | `deterministic_checklist_v1` | 7/8 | 5 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_auth_failure` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e0-b12-scored_adaptive_v2-r1-c3863c` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E0` | `scored_adaptive_v2` | 3/12 | 3 | `supported_diagnosis` | `supported_diagnosis` | `database:db_schema_missing_table, order-service:db_auth_failure` | `database:db_schema_missing_table, order-service:db_auth_failure` | `True` | 1.00/1.00 |
+| `run-multi_fault_c_and_d-e0-b12-det_checklist-r1-bb35df` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E0` | `deterministic_checklist_v1` | 7/12 | 5 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_auth_failure` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e0-b12-improved_checklist-r1-d0abdf` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E0` | `improved_checklist_v1` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_schema_missing_table` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e1-b8-det_checklist-r1-5ec7bc` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E1` | `deterministic_checklist_v1` | 7/8 | 5 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_auth_failure` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e1-b8-improved_checklist-r1-081ad3` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E1` | `improved_checklist_v1` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_schema_missing_table` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e1-b8-scored_adaptive_v2-r1-69737e` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E1` | `scored_adaptive_v2` | 3/8 | 3 | `supported_diagnosis` | `supported_diagnosis` | `database:db_schema_missing_table` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e1-b12-improved_checklist-r1-898c42` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E1` | `improved_checklist_v1` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_schema_missing_table` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e1-b12-scored_adaptive_v2-r1-84a038` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E1` | `scored_adaptive_v2` | 3/12 | 3 | `supported_diagnosis` | `supported_diagnosis` | `database:db_schema_missing_table` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_c_and_d-e1-b12-det_checklist-r1-90006c` | `orders_app` | `multi_fault_c_and_d` | `multi_fault` | `E1` | `deterministic_checklist_v1` | 7/12 | 5 | `supported_diagnosis` | `supported_diagnosis` | `order-service:db_auth_failure` | `database:db_schema_missing_table, order-service:db_auth_failure` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e0-b8-scored_adaptive_v2-r1-9eb345` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E0` | `scored_adaptive_v2` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e0-b8-det_checklist-r1-44b488` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E0` | `deterministic_checklist_v1` | 1/8 | 1 | `supported_diagnosis` | `supported_diagnosis` | `order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e0-b8-improved_checklist-r1-59ca8a` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E0` | `improved_checklist_v1` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable, order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `True` | 1.00/1.00 |
+| `run-multi_fault_f_masks_b-e0-b12-det_checklist-r1-1d2419` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E0` | `deterministic_checklist_v1` | 1/12 | 1 | `supported_diagnosis` | `supported_diagnosis` | `order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e0-b12-improved_checklist-r1-b4b5e9` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E0` | `improved_checklist_v1` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable, order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `True` | 1.00/1.00 |
+| `run-multi_fault_f_masks_b-e0-b12-scored_adaptive_v2-r1-69b1cc` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E0` | `scored_adaptive_v2` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e1-b8-improved_checklist-r1-245085` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E1` | `improved_checklist_v1` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable, order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `True` | 1.00/1.00 |
+| `run-multi_fault_f_masks_b-e1-b8-scored_adaptive_v2-r1-b3fb97` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E1` | `scored_adaptive_v2` | 2/8 | 2 | `supported_diagnosis` | `supported_diagnosis` | `order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e1-b8-det_checklist-r1-3a4a0b` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E1` | `deterministic_checklist_v1` | 1/8 | 1 | `supported_diagnosis` | `supported_diagnosis` | `order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e1-b12-scored_adaptive_v2-r1-a91855` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E1` | `scored_adaptive_v2` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e1-b12-det_checklist-r1-adc46a` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E1` | `deterministic_checklist_v1` | 1/12 | 1 | `supported_diagnosis` | `supported_diagnosis` | `order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `False` | 1.00/0.50 |
+| `run-multi_fault_f_masks_b-e1-b12-improved_checklist-r1-f5baf8` | `orders_app` | `multi_fault_f_masks_b` | `multi_fault` | `E1` | `improved_checklist_v1` | 2/12 | 2 | `supported_diagnosis` | `supported_diagnosis` | `database:db_service_unavailable, order-service:order_service_unavailable` | `database:db_service_unavailable, order-service:order_service_unavailable` | `True` | 1.00/1.00 |
+| `run-inv_multi_fault_db_and_cache-e0-b8-det_checklist-r1-e6b9e6` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E0` | `deterministic_checklist_v1` | 8/8 | 6 | `inconclusive` | `budget_exhaustion` | `None:None` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `False` | 0.00/0.00 |
+| `run-inv_multi_fault_db_and_cache-e0-b8-improved_checklist-r1-340bcd` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E0` | `improved_checklist_v1` | 3/8 | 3 | `supported_diagnosis` | `supported_diagnosis` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `True` | 1.00/1.00 |
+| `run-inv_multi_fault_db_and_cache-e0-b8-scored_adaptive_v2-r1-6d7a8b` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E0` | `scored_adaptive_v2` | 3/8 | 3 | `supported_diagnosis` | `supported_diagnosis` | `inventory-cache:cache_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `False` | 1.00/0.50 |
+| `run-inv_multi_fault_db_and_cache-e0-b12-improved_checklist-r1-c88abb` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E0` | `improved_checklist_v1` | 3/12 | 3 | `supported_diagnosis` | `supported_diagnosis` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `True` | 1.00/1.00 |
+| `run-inv_multi_fault_db_and_cache-e0-b12-scored_adaptive_v2-r1-273043` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E0` | `scored_adaptive_v2` | 3/12 | 3 | `supported_diagnosis` | `supported_diagnosis` | `inventory-cache:cache_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `False` | 1.00/0.50 |
+| `run-inv_multi_fault_db_and_cache-e0-b12-det_checklist-r1-4d0bc2` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E0` | `deterministic_checklist_v1` | 9/12 | 7 | `supported_diagnosis` | `supported_diagnosis` | `inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `False` | 1.00/0.50 |
+| `run-inv_multi_fault_db_and_cache-e1-b8-scored_adaptive_v2-r1-64bec6` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E1` | `scored_adaptive_v2` | 4/8 | 4 | `supported_diagnosis` | `supported_diagnosis` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `True` | 1.00/1.00 |
+| `run-inv_multi_fault_db_and_cache-e1-b8-det_checklist-r1-eb345a` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E1` | `deterministic_checklist_v1` | 8/8 | 6 | `inconclusive` | `honest_inconclusive` | `inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `False` | 0.00/0.00 |
+| `run-inv_multi_fault_db_and_cache-e1-b8-improved_checklist-r1-a3f766` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E1` | `improved_checklist_v1` | 3/8 | 3 | `supported_diagnosis` | `supported_diagnosis` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `True` | 1.00/1.00 |
+| `run-inv_multi_fault_db_and_cache-e1-b12-det_checklist-r1-07af7d` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E1` | `deterministic_checklist_v1` | 9/12 | 7 | `supported_diagnosis` | `supported_diagnosis` | `inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `False` | 1.00/0.50 |
+| `run-inv_multi_fault_db_and_cache-e1-b12-improved_checklist-r1-c6826a` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E1` | `improved_checklist_v1` | 3/12 | 3 | `supported_diagnosis` | `supported_diagnosis` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `True` | 1.00/1.00 |
+| `run-inv_multi_fault_db_and_cache-e1-b12-scored_adaptive_v2-r1-0f6bbf` | `inventory_app` | `inv_multi_fault_db_and_cache` | `second_app` | `E1` | `scored_adaptive_v2` | 4/12 | 4 | `supported_diagnosis` | `supported_diagnosis` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `inventory-cache:cache_service_unavailable, inventory-db:db_service_unavailable` | `True` | 1.00/1.00 |

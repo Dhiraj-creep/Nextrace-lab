@@ -1,0 +1,196 @@
+{
+  "incident_id": "inc-0118-308a4ee4",
+  "method": "deterministic_checklist_v1",
+  "outcome": "inconclusive",
+  "predicted_service": null,
+  "predicted_fault_type": null,
+  "candidate_explanations": [
+    "order-service:db_endpoint_misconfiguration",
+    "database:db_service_unavailable",
+    "order-service:db_auth_failure",
+    "database:db_schema_missing_table",
+    "database:db_operation_delay"
+  ],
+  "supporting_evidence_ids": [
+    "ev-0001-41359996",
+    "ev-0002-ed97f608",
+    "ev-0003-d0bea8f8"
+  ],
+  "contradictory_evidence_ids": [],
+  "missing_evidence": [
+    "get_recent_logs:gateway (unavailable)",
+    "get_recent_logs:order-service (not_checked_budget_exhausted)",
+    "check_database_connectivity_from_order_service (not_checked_budget_exhausted)",
+    "get_order_service_database_config (not_checked_budget_exhausted)",
+    "get_service_health:database (not_checked_budget_exhausted)"
+  ],
+  "checks_attempted": 4,
+  "total_diagnostic_duration_ms": 185.067,
+  "total_returned_bytes": 827,
+  "budget": 4,
+  "stop_reason": "budget_exhausted",
+  "wall_clock_duration_ms": 185.067,
+  "summed_tool_duration_ms": 184.52,
+  "selector_duration_ms": 0.0,
+  "total_cost_units": 4,
+  "plain_language_explanation": "Investigation ended as inconclusive because available evidence within the budget could not distinguish among remaining candidates: order-service:db_endpoint_misconfiguration, database:db_service_unavailable, order-service:db_auth_failure, database:db_schema_missing_table, database:db_operation_delay.",
+  "evidence_gate_passed": true,
+  "evidence_gate_note": "Inconclusive outcome preserved honestly.",
+  "hypotheses": [
+    {
+      "hypothesis_id": "order-service:db_endpoint_misconfiguration",
+      "service": "order-service",
+      "fault_type": "db_endpoint_misconfiguration",
+      "description": "Order service is configured with an incorrect or unresolvable database hostname/port.",
+      "status": "candidate",
+      "supporting_evidence_ids": [
+        "ev-0003-d0bea8f8"
+      ],
+      "contradicting_evidence_ids": [],
+      "missing_evidence_keys": [
+        "get_order_service_database_config",
+        "check_database_connectivity_from_order_service"
+      ],
+      "required_evidence_summary": "Requires order-service->DB failure AND effective DB endpoint differing from dependency specification without contradictory database unavailability."
+    },
+    {
+      "hypothesis_id": "database:db_service_unavailable",
+      "service": "database",
+      "fault_type": "db_service_unavailable",
+      "description": "The database service process/container is stopped or unreachable.",
+      "status": "candidate",
+      "supporting_evidence_ids": [
+        "ev-0003-d0bea8f8"
+      ],
+      "contradicting_evidence_ids": [],
+      "missing_evidence_keys": [
+        "get_order_service_database_config",
+        "get_service_health:database"
+      ],
+      "required_evidence_summary": "Requires order-service->DB failure, valid order-service DB endpoint configuration, and independent observation that database service health is unreachable."
+    },
+    {
+      "hypothesis_id": "order-service:db_auth_failure",
+      "service": "order-service",
+      "fault_type": "db_auth_failure",
+      "description": "Order service is presenting invalid database credentials rejected by the database server.",
+      "status": "candidate",
+      "supporting_evidence_ids": [
+        "ev-0003-d0bea8f8"
+      ],
+      "contradicting_evidence_ids": [],
+      "missing_evidence_keys": [
+        "check_database_connectivity_from_order_service",
+        "get_service_health:database"
+      ],
+      "required_evidence_summary": "Requires protocol-level authentication_failure from order-service connectivity corroborated by database health (running_healthy) or service error logs."
+    },
+    {
+      "hypothesis_id": "database:db_schema_missing_table",
+      "service": "database",
+      "fault_type": "db_schema_missing_table",
+      "description": "Database service is running and reachable, but the required 'orders' table/schema is missing.",
+      "status": "candidate",
+      "supporting_evidence_ids": [
+        "ev-0003-d0bea8f8"
+      ],
+      "contradicting_evidence_ids": [],
+      "missing_evidence_keys": [
+        "check_database_connectivity_from_order_service",
+        "get_service_health:database"
+      ],
+      "required_evidence_summary": "Requires protocol-level schema_or_query_error (missing table) observed via connectivity probe and corroborated by database health probe or service logs."
+    },
+    {
+      "hypothesis_id": "database:db_operation_delay",
+      "service": "database",
+      "fault_type": "db_operation_delay",
+      "description": "Database operations exceed the application timeout deadline due to database-side delay.",
+      "status": "candidate",
+      "supporting_evidence_ids": [
+        "ev-0003-d0bea8f8"
+      ],
+      "contradicting_evidence_ids": [],
+      "missing_evidence_keys": [
+        "check_database_connectivity_from_order_service",
+        "get_service_health:database"
+      ],
+      "required_evidence_summary": "Requires protocol-level operation_timeout observed when querying the reachable database and corroborated by database health probe or service logs."
+    },
+    {
+      "hypothesis_id": "order-service:order_service_unavailable",
+      "service": "order-service",
+      "fault_type": "order_service_unavailable",
+      "description": "The order-service process is stopped or unreachable from the gateway.",
+      "status": "refuted",
+      "supporting_evidence_ids": [],
+      "contradicting_evidence_ids": [
+        "ev-0003-d0bea8f8"
+      ],
+      "missing_evidence_keys": [],
+      "required_evidence_summary": "Requires get_service_health('order-service') observing 'unreachable' while gateway is running."
+    },
+    {
+      "hypothesis_id": "system:other_or_unknown_cause",
+      "service": "unknown",
+      "fault_type": "other_or_unknown_cause",
+      "description": "An unmodeled failure mode or external cause not covered by known fault hypotheses.",
+      "status": "candidate",
+      "supporting_evidence_ids": [],
+      "contradicting_evidence_ids": [],
+      "missing_evidence_keys": [],
+      "required_evidence_summary": "Remains a candidate whenever observations conflict with all modeled hypotheses."
+    }
+  ],
+  "decision_trace": [
+    {
+      "action": "execute_check",
+      "check_name": "get_dependency_specification",
+      "target": "application",
+      "arguments": {},
+      "rationale": "Fixed checklist step: get_dependency_specification",
+      "target_hypotheses": [],
+      "proposed_outcome": null,
+      "proposed_service": null,
+      "proposed_fault_type": null,
+      "supporting_evidence_ids": []
+    },
+    {
+      "action": "execute_check",
+      "check_name": "get_service_health",
+      "target": "gateway",
+      "arguments": {},
+      "rationale": "Fixed checklist step: get_service_health:gateway",
+      "target_hypotheses": [],
+      "proposed_outcome": null,
+      "proposed_service": null,
+      "proposed_fault_type": null,
+      "supporting_evidence_ids": []
+    },
+    {
+      "action": "execute_check",
+      "check_name": "get_service_health",
+      "target": "order-service",
+      "arguments": {},
+      "rationale": "Fixed checklist step: get_service_health:order-service",
+      "target_hypotheses": [],
+      "proposed_outcome": null,
+      "proposed_service": null,
+      "proposed_fault_type": null,
+      "supporting_evidence_ids": []
+    },
+    {
+      "action": "execute_check",
+      "check_name": "get_recent_logs",
+      "target": "gateway",
+      "arguments": {},
+      "rationale": "Fixed checklist step: get_recent_logs:gateway",
+      "target_hypotheses": [],
+      "proposed_outcome": null,
+      "proposed_service": null,
+      "proposed_fault_type": null,
+      "supporting_evidence_ids": []
+    }
+  ],
+  "model_metrics": null
+}

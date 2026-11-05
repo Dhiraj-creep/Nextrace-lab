@@ -1,0 +1,17 @@
+# Environment & credentials
+.env
+*.env.local
+*secret*
+
+# Python bytecode & caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Runtime state, logs, persistent DB storage, and private ground truth
+var/
+
